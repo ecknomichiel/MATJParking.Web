@@ -27,6 +27,10 @@ bld/
 *.VisualState.xml
 TestResult.xml
 
+#SQL server databases
+*.mdf
+*.ldf
+
 # Build Results of an ATL Project
 [Dd]ebugPS/
 [Rr]eleasePS/
