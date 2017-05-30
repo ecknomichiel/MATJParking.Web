@@ -124,9 +124,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201705301033415_First.cs" />
-    <Compile Include="Migrations\201705301033415_First.Designer.cs">
-      <DependentUpon>201705301033415_First.cs</DependentUpon>
+    <Compile Include="Migrations\201705301204453_First.cs" />
+    <Compile Include="Migrations\201705301204453_First.Designer.cs">
+      <DependentUpon>201705301204453_First.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ParkingPlace.cs" />
@@ -186,8 +186,8 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201705301033415_First.resx">
-      <DependentUpon>201705301033415_First.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201705301204453_First.resx">
+      <DependentUpon>201705301204453_First.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

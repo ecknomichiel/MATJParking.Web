@@ -13,7 +13,7 @@ namespace MATJParking.Web.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201705301033415_First"; }
+            get { return "201705301204453_First"; }
         }
         
         string IMigrationMetadata.Source

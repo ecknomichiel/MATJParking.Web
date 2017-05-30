@@ -23,10 +23,6 @@ bld/
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
 
-# MS SQL Server databases
-*.mdb
-*.ldb
-
 #NUNIT
 *.VisualState.xml
 TestResult.xml
