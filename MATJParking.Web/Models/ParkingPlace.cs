@@ -1,15 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MATJParking
+namespace MATJParking.Web.Models
 {
-    class ParkingPlace
+    public class ParkingPlace
     {
         private Vehicle vehicle;
         public VehicleType VehicleType { get; set; }
+        [ForeignKey("VehicleType")]
+        public int VehicleTypeID { get { return VehicleType.ID; } }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public string ID { get; set; }
         public bool Occupied { get {return vehicle != null;} }
         public string VehicleRegNumber 

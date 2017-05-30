@@ -3,49 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MATJParking.Web.Models;
+using MATJParking.Web.DataAccess;
 
-namespace MATJParking
+namespace MATJParking.Web.Repositories
 {
     class Garage
     {
-        private List<ParkingPlace> parkingPlaces = new List<ParkingPlace>();
+        private GarageContext context = new GarageContext();
         #region Private Methods
         private Vehicle CreateVehicle(VehicleType aVehicleType)
         {
-            switch (aVehicleType)
-            {
-                case VehicleType.Motorcycle:
-                    return new MotorCycle();
-                case VehicleType.Car:
-                    return new Car();
-                case VehicleType.Bus:
-                    return new Bus();
-                case VehicleType.Truck:
-                    return new Truck();
-                default:
-                    throw new EUnknownVehicleType(aVehicleType.ToString());
-            }
+            return new Vehicle() { VehicleType = aVehicleType };
         }
-        private void LoadParkingPlaces()
-        {
-            int i;
-            for (i = 0; i < 1; i++ ) 
-            {
-                parkingPlaces.Add(new ParkingPlace() {ID = "B" + i, VehicleType = VehicleType.Bus});
-            }
-            for (i = 0; i < 5; i++)
-            {
-                parkingPlaces.Add(new ParkingPlace() { ID = "T" + i, VehicleType = VehicleType.Truck });
-            }
-            for (i = 0; i < 50; i++)
-            {
-                parkingPlaces.Add(new ParkingPlace() { ID = "C" + i, VehicleType = VehicleType.Car });
-            }
-            for (i = 0; i < 20; i++)
-            {
-                parkingPlaces.Add(new ParkingPlace() { ID = "M" + i, VehicleType = VehicleType.Motorcycle });
-            }
-        }
+        private IEnumerable<ParkingPlace> ParkingPlaces { get { return context.ParkingPlaces; } }
         #endregion
         #region Public Methods
         public string CheckIn(string RegistrationNumber, VehicleType aVehicleType)
@@ -81,26 +52,26 @@ namespace MATJParking
         #region Search
         public IEnumerable<ParkingPlace> SearchAllParkingPlaces()
         {
-            return parkingPlaces;
+            return ParkingPlaces;
         }
         public IEnumerable<ParkingPlace> SearchAllParkedVehicles()
         {
-            return parkingPlaces.Where(pl => pl.Occupied);
+            return ParkingPlaces.Where(pl => pl.Occupied);
         }
         public IEnumerable<ParkingPlace> SearchAllParkedVehiclesOnPrice(double aPrice, bool greaterThan)
         {
             if (greaterThan)
-                return parkingPlaces.Where(pl => pl.Occupied && pl.Vehicle.Price >= aPrice);
+                return ParkingPlaces.Where(pl => pl.Occupied && pl.Vehicle.Price >= aPrice);
             else
-                return parkingPlaces.Where(pl => pl.Occupied && pl.Vehicle.Price <= aPrice);
+                return ParkingPlaces.Where(pl => pl.Occupied && pl.Vehicle.Price <= aPrice);
         }
 
         public IEnumerable<ParkingPlace> SearchAllParkedVehiclesOnParkingTime(double hours, bool greaterThan)
         {
             if (greaterThan)
-                return parkingPlaces.Where(pl => pl.Occupied && pl.Vehicle.ParkingTime >= hours);
+                return ParkingPlaces.Where(pl => pl.Occupied && pl.Vehicle.ParkingTime >= hours);
             else
-                return parkingPlaces.Where(pl => pl.Occupied && pl.Vehicle.ParkingTime <= hours);
+                return ParkingPlaces.Where(pl => pl.Occupied && pl.Vehicle.ParkingTime <= hours);
         }
         public Vehicle SearchVehicle(string aRegistrationNumber)
         {
@@ -116,7 +87,7 @@ namespace MATJParking
         }
         public ParkingPlace SearchPlaceWhereVehicleIsParked(string aRegistrationNumber)
         {// Can throw an exception if a programmer bypassed the checkin function to park a car
-            return parkingPlaces.SingleOrDefault(pl => pl.Occupied && pl.VehicleRegNumber == aRegistrationNumber);
+            return ParkingPlaces.SingleOrDefault(pl => pl.Occupied && pl.VehicleRegNumber == aRegistrationNumber);
         }
         #endregion
         #region Constructor
