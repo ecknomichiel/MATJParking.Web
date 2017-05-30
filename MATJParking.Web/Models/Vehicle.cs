@@ -18,6 +18,7 @@ namespace MATJParking.Web.Models
         }
         public DateTime CheckInTime { get; set; }
         public DateTime CheckOutTime { get; set; }
+        [ForeignKey("VehicleType")]
         public VehicleType VehicleType { get; set; }
 
         [Key]

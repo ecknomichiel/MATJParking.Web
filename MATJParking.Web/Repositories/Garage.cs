@@ -28,7 +28,7 @@ namespace MATJParking.Web.Repositories
                 throw new EVehicleAlreadyCheckedIn(RegistrationNumber, place.ID);
             try
             { //If there is no available space for this type of car, an exception is raised (sequence contains no elements)
-                place = parkingPlaces.Where(pl => pl.VehicleType == vehicle.VehicleType)
+                place = ParkingPlaces.Where(pl => pl.VehicleType == vehicle.VehicleType)
                                                 .Where(pl => !pl.Occupied)
                                                 .First();
             }
@@ -93,7 +93,7 @@ namespace MATJParking.Web.Repositories
         #region Constructor
         public Garage()
         {
-            LoadParkingPlaces();
+            context = new GarageContext();
         }
         #endregion
 
