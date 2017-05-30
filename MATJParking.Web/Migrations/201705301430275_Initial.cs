@@ -3,10 +3,20 @@ namespace MATJParking.Web.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class First : DbMigration
+    public partial class Initial : DbMigration
     {
         public override void Up()
         {
+            CreateTable(
+                "dbo.Owners",
+                c => new
+                    {
+                        CustomerID = c.Int(nullable: false, identity: true),
+                        FirstName = c.String(),
+                        LastName = c.String(),
+                    })
+                .PrimaryKey(t => t.CustomerID);
+            
             CreateTable(
                 "dbo.ParkingPlaces",
                 c => new
@@ -52,6 +62,7 @@ namespace MATJParking.Web.Migrations
             DropTable("dbo.Vehicles");
             DropTable("dbo.VehicleTypes");
             DropTable("dbo.ParkingPlaces");
+            DropTable("dbo.Owners");
         }
     }
 }
