@@ -128,7 +128,12 @@
     <Compile Include="Migrations\201705301204453_First.Designer.cs">
       <DependentUpon>201705301204453_First.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201705301254084_Owners.cs" />
+    <Compile Include="Migrations\201705301254084_Owners.Designer.cs">
+      <DependentUpon>201705301254084_Owners.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Owner.cs" />
     <Compile Include="Models\ParkingPlace.cs" />
     <Compile Include="Models\Vehicle.cs" />
     <Compile Include="Models\VehicleType.cs" />
@@ -188,6 +193,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201705301204453_First.resx">
       <DependentUpon>201705301204453_First.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705301254084_Owners.resx">
+      <DependentUpon>201705301254084_Owners.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
