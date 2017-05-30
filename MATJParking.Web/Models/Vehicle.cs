@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
-namespace MATJParking
+namespace MATJParking.Web.Models
 {
-   abstract class Vehicle
+    public class Vehicle
     {
         
         protected double StandardPrice
@@ -16,7 +18,11 @@ namespace MATJParking
         }
         public DateTime CheckInTime { get; set; }
         public DateTime CheckOutTime { get; set; }
-        public VehicleType VehicleType { get { return GetVehicleType(); } }
+        [ForeignKey("VehicleType")]
+        public VehicleType VehicleType { get; set; }
+
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public string RegNumber { get; set; }
         public double Price 
         {
@@ -37,21 +43,15 @@ namespace MATJParking
 
         //methods
 
-        protected abstract double GetPrice();
-        protected abstract VehicleType GetVehicleType();
+        public double GetPrice()
+        {
+            return StandardPrice * VehicleType.PricingFactor;
+        }
         public override string ToString()
         {
             return String.Format("Registration number: {0}\n Vehicle type: {1}\n Checked in {2}" +
                 "\n Current parking time {4} hours\n Current price: SEK {3}", RegNumber, VehicleType, CheckInTime, Price, Math.Round(ParkingTime, 2));
         }
         
-    }
-
-    enum VehicleType
-    {
-        Motorcycle,
-        Car,
-        Bus,
-        Truck
     }
 }
