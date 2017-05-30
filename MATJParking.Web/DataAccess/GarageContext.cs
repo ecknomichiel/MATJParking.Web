@@ -13,7 +13,9 @@ namespace MATJParking.Web.DataAccess
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<ParkingPlace> ParkingPlaces { get; set; }
 
+        public DbSet<Owner> Owners { get; set; }
         public GarageContext() : base("DefaultConnection") { }
+        
     }
 
 
