@@ -18,6 +18,7 @@ namespace MATJParking.Web.Models
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public string ID { get; set; }
         public bool Occupied { get {return vehicle != null;} }
+        [ForeignKey("Vehicle")]
         public string VehicleRegNumber 
         { 
             get 
@@ -29,6 +30,7 @@ namespace MATJParking.Web.Models
             } 
         }
         public Vehicle Vehicle { get { return vehicle; } }
+
 
         public void Park(Vehicle aVehicle)
         {
