@@ -28,11 +28,15 @@ namespace MATJParking.Web.Repositories
         }
         #endregion
         #region Private Methods
+        private IEnumerable<ParkingPlace> ParkingPlaces { get { return context.ParkingPlaces; } }
         private Vehicle CreateVehicle(VehicleType aVehicleType)
         {
             return new Vehicle() { VehicleType = aVehicleType };
         }
-        private IEnumerable<ParkingPlace> ParkingPlaces { get { return context.ParkingPlaces; } }
+        private VehicleType GetVehicleType(int aVehicleTypeId)
+        {
+            return context.VehicleTypes.SingleOrDefault(vt => vt.ID == aVehicleTypeId);
+        }
         #endregion
         #region Public Methods
         public ParkingPlace CheckIn(string RegistrationNumber, int aVehicleTypeId)
@@ -56,11 +60,6 @@ namespace MATJParking.Web.Repositories
             place.Park(vehicle);
 
             return place;
-        }
-
-        private VehicleType GetVehicleType(int aVehicleTypeId)
-        {
-            return context.VehicleTypes.SingleOrDefault(vt => vt.ID == aVehicleTypeId);
         }
 
         public void CheckOut(string RegistrationNumber)
@@ -110,6 +109,10 @@ namespace MATJParking.Web.Repositories
         public ParkingPlace SearchPlaceWhereVehicleIsParked(string aRegistrationNumber)
         {// Can throw an exception if a programmer bypassed the checkin function to park a car
             return ParkingPlaces.SingleOrDefault(pl => pl.Occupied && pl.VehicleRegNumber == aRegistrationNumber);
+        }
+        public IEnumerable<VehicleType> GetVehicleTypes()
+        {
+            return context.VehicleTypes;
         }
         #endregion
         #region Constructor

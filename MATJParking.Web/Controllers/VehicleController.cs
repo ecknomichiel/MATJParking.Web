@@ -13,7 +13,7 @@ namespace MATJParking.Web.Controllers
         // GET: Vehicle
         public ActionResult Index()
         {
-            return View();
+            return View(Garage.Instance.GetVehicleTypes());
         }
 
         public ActionResult CheckIn(string registrationNumber, string vehicleTypeId)

@@ -1,0 +1,10 @@
+﻿@model IEnumerable<MATJParking.Web.Models.VehicleType>
+
+<label for="sel1">Vehicle type :</label>
+<select class="form-control" id="type" name="vehicleTypeId">
+    @foreach (MATJParking.Web.Models.VehicleType item in Model)
+    {
+        <option value="@item.ID">@item.Name</option>
+    }
+    </select>
+
