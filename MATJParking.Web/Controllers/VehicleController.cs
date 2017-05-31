@@ -12,9 +12,6 @@ namespace MATJParking.Web.Controllers
 {
     public class VehicleController : Controller
     {
-                
-         GarageContext context = null;
-
         public VehicleController()
          {
            
@@ -26,17 +23,20 @@ namespace MATJParking.Web.Controllers
             return View(Garage.Instance.GetVehicleTypes());
         }
 
-        public ActionResult CheckIn(string registrationNumber, string vehicleTypeId)
+        public ActionResult CheckIn(string registrationNumber, int? vehicleTypeId)
         {
-            int type = 0;
-            if ("" != vehicleTypeId)
-                type = int.Parse(vehicleTypeId);
             Vehicle vehicle = Garage.Instance.SearchVehicle(registrationNumber);
             ParkingPlace pl = null;
 
+            if (vehicleTypeId == null)
+            {
+                ViewBag.Message = "Vehicle type is required";
+                return RedirectToAction("Index");
+            }
+
             try
             {
-                pl = Garage.Instance.CheckIn(registrationNumber, type);
+                pl = Garage.Instance.CheckIn(registrationNumber, vehicleTypeId.Value);
             }
             catch (Exception e)
             {
