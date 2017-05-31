@@ -1,0 +1,18 @@
+﻿@model MATJParking.Web.Models.ParkingPlace
+
+@{
+    ViewBag.Title = "CheckOut";
+}
+
+<h2>CheckOut</h2>
+
+<h3></h3>
+
+@Html.Partial("_ParkedVehicle", Model)
+
+
+
+<div class="ChekOtButtons">
+    <button type="submit" class="btn btn-success" formaction="~/Vehicle/Yes">Yes</button>
+    <button type="submit" class="btn btn-primary" formaction="~/Vehicle/No">No</button>
+</div>

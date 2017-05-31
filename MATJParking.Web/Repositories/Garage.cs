@@ -110,7 +110,7 @@ namespace MATJParking.Web.Repositories
         }
         public ParkingPlace SearchPlaceWhereVehicleIsParked(string aRegistrationNumber)
         {// Can throw an exception if a programmer bypassed the checkin function to park a car
-            return ParkingPlaces.SingleOrDefault(pl => pl.Occupied && pl.VehicleRegNumber == aRegistrationNumber);
+            return ParkingPlaces.SingleOrDefault(pl => pl.Occupied && pl.VehicleRegNumber.ToUpper() == aRegistrationNumber.ToUpper());
         }
         public IEnumerable<VehicleType> GetVehicleTypes()
         {

@@ -50,6 +50,13 @@ namespace MATJParking.Web.Controllers
 
             return View(pl);
         }
+                                            // CheckOut
+        public ActionResult CheckOut(string RegistrationNumber)
+        {
+            ParkingPlace pl = Garage.Instance.SearchPlaceWhereVehicleIsParked(RegistrationNumber);
+
+            return View(pl);
+        }																			
 
         public ActionResult SearchCar(string registrationNumber)
         {
@@ -60,8 +67,5 @@ namespace MATJParking.Web.Controllers
             }
             return View(pl);
         }
-
-        
-
     }
 }
