@@ -53,6 +53,8 @@ namespace MATJParking.Web.Models
             return String.Format("Registration number: {0}\n Vehicle type: {1}\n Checked in {2}" +
                 "\n Current parking time {4} hours\n Current price: SEK {3}", RegNumber, VehicleType, CheckInTime, Price, Math.Round(ParkingTime, 2));
         }
-        
+
+
+       
     }
 }

@@ -175,8 +175,9 @@
     <Content Include="Views\Vehicle\Index.cshtml" />
     <Content Include="Views\Vehicle\CheckIn.cshtml" />
     <Content Include="Views\Vehicle\_VehicleType.cshtml" />
-    <Content Include="Views\Vehicle\_ParkedCar.cshtml" />
+    <Content Include="Views\Vehicle\_ParkedVehicle.cshtml" />
     <Content Include="Views\Vehicle\SearchCar.cshtml" />
+    <Content Include="Views\Vehicle\CheckOut.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
