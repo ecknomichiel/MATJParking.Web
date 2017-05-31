@@ -51,6 +51,16 @@ namespace MATJParking.Web.Controllers
             return View(pl);
         }
 
+        public ActionResult SearchCar(string registrationNumber)
+        {
+            ParkingPlace pl = Garage.Instance.SearchPlaceWhereVehicleIsParked(registrationNumber);
+            if (pl == null)
+            {
+                ViewBag.Message = "Cannot find car with registrationnumber " + registrationNumber;
+            }
+            return View(pl);
+        }
+
         
 
     }

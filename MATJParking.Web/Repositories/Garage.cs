@@ -41,12 +41,22 @@ namespace MATJParking.Web.Repositories
         #region Public Methods
         public ParkingPlace CheckIn(string RegistrationNumber, int aVehicleTypeId)
         {
-            VehicleType vt = GetVehicleType(aVehicleTypeId);
-            Vehicle vehicle = CreateVehicle(vt);
-            vehicle.RegNumber = RegistrationNumber;
-            ParkingPlace place = SearchPlaceWhereVehicleIsParked(RegistrationNumber);
+            string uRegNr = RegistrationNumber.ToUpper();
+            ParkingPlace place = SearchPlaceWhereVehicleIsParked(uRegNr);
             if (place != null)
-                throw new EVehicleAlreadyCheckedIn(RegistrationNumber, place.ID);
+                throw new EVehicleAlreadyCheckedIn(uRegNr, place.ID);
+
+            Vehicle vehicle;
+            vehicle = SearchVehicle(uRegNr);
+            if (vehicle == null)
+            {
+                VehicleType vt = GetVehicleType(aVehicleTypeId);
+                vehicle = CreateVehicle(vt);
+                vehicle.RegNumber = uRegNr;
+                context.Vehicles.Add(vehicle);
+            }
+            
+            
             try
             { //If there is no available space for this type of car, an exception is raised (sequence contains no elements)
                 place = ParkingPlaces.Where(pl => pl.VehicleType == vehicle.VehicleType)
@@ -55,7 +65,7 @@ namespace MATJParking.Web.Repositories
             }
             catch (Exception)
             {// Throw our own exception with a custom message text
-                throw new ENoPlaceForVehicle(vt.Name);
+                throw new ENoPlaceForVehicle(vehicle.VehicleType.Name);
             }
             place.Park(vehicle);
 
@@ -96,15 +106,7 @@ namespace MATJParking.Web.Repositories
         }
         public Vehicle SearchVehicle(string aRegistrationNumber)
         {
-            ParkingPlace park = SearchPlaceWhereVehicleIsParked(aRegistrationNumber);
-            if (park == null)
-            {
-                return null;
-            }
-            else
-            {
-                return park.Vehicle;
-            }
+            return context.Vehicles.SingleOrDefault(veh => veh.RegNumber.ToUpper() == aRegistrationNumber.ToUpper());
         }
         public ParkingPlace SearchPlaceWhereVehicleIsParked(string aRegistrationNumber)
         {// Can throw an exception if a programmer bypassed the checkin function to park a car
