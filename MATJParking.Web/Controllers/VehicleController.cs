@@ -25,6 +25,31 @@ namespace MATJParking.Web.Controllers
         {
             return View(Garage.Instance.GetVehicleTypes());
         }
+
+        public ActionResult CheckIn(string registrationNumber, string vehicleTypeId)
+        {
+            int type = 0;
+            if ("" != vehicleTypeId)
+                type = int.Parse(vehicleTypeId);
+            Vehicle vehicle = Garage.Instance.SearchVehicle(registrationNumber);
+            ParkingPlace pl = null;
+
+            try
+            {
+                pl = Garage.Instance.CheckIn(registrationNumber, type);
+            }
+            catch (Exception e)
+            {
+                //No space available or vehicle already parked
+                ViewBag.Message = e.Message;
+                //Add a dummy parkingplace with all available vehicle info
+                pl = new ParkingPlace();
+                if (vehicle != null)
+                    pl.Park(vehicle);
+            }
+
+            return View(pl);
+        }
     }
 
 }
