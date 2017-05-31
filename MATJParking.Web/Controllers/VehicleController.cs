@@ -6,7 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using MATJParking.Web.Models;
 using MATJParking.Web.Repositories;
-using MATJParking.Web.Models;
+
 
 namespace MATJParking.Web.Controllers
 {
@@ -50,6 +50,8 @@ namespace MATJParking.Web.Controllers
 
             return View(pl);
         }
-    }
 
+        
+
+    }
 }
