@@ -13,7 +13,16 @@ namespace MATJParking.Web.Models
         private Vehicle vehicle;
         public VehicleType VehicleType { get; set; }
         [ForeignKey("VehicleType")]
-        public int VehicleTypeID { get { return VehicleType.ID; } }
+        public int VehicleTypeID 
+        { 
+            get 
+            {
+                if (vehicle != null)
+                    return VehicleType.ID;
+                else
+                    return 0;
+            } 
+        }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public string ID { get; set; }

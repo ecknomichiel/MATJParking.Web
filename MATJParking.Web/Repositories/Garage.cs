@@ -11,6 +11,22 @@ namespace MATJParking.Web.Repositories
     class Garage
     {
         private GarageContext context = new GarageContext();
+
+        private static Garage instance;
+
+        #region Singleton pattern
+        public static Garage Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new Garage();
+                }
+                return instance;
+            }
+        }
+        #endregion
         #region Private Methods
         private Vehicle CreateVehicle(VehicleType aVehicleType)
         {
@@ -19,9 +35,10 @@ namespace MATJParking.Web.Repositories
         private IEnumerable<ParkingPlace> ParkingPlaces { get { return context.ParkingPlaces; } }
         #endregion
         #region Public Methods
-        public string CheckIn(string RegistrationNumber, VehicleType aVehicleType)
+        public ParkingPlace CheckIn(string RegistrationNumber, int aVehicleTypeId)
         {
-            Vehicle vehicle = CreateVehicle(aVehicleType);
+            VehicleType vt = GetVehicleType(aVehicleTypeId);
+            Vehicle vehicle = CreateVehicle(vt);
             vehicle.RegNumber = RegistrationNumber;
             ParkingPlace place = SearchPlaceWhereVehicleIsParked(RegistrationNumber);
             if (place != null)
@@ -34,11 +51,16 @@ namespace MATJParking.Web.Repositories
             }
             catch (Exception)
             {// Throw our own exception with a custom message text
-                throw new ENoPlaceForVehicle(aVehicleType.ToString());
+                throw new ENoPlaceForVehicle(vt.Name);
             }
             place.Park(vehicle);
 
-            return place.ID;
+            return place;
+        }
+
+        private VehicleType GetVehicleType(int aVehicleTypeId)
+        {
+            return context.VehicleTypes.SingleOrDefault(vt => vt.ID == aVehicleTypeId);
         }
 
         public void CheckOut(string RegistrationNumber)
@@ -91,7 +113,7 @@ namespace MATJParking.Web.Repositories
         }
         #endregion
         #region Constructor
-        public Garage()
+        private Garage()
         {
             context = new GarageContext();
         }

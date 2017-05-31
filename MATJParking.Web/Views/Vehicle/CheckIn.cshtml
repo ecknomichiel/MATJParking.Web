@@ -1,0 +1,49 @@
+﻿@model MATJParking.Web.Models.ParkingPlace
+
+@{
+    ViewBag.Title = "CheckIn";
+}
+
+<h2>CheckIn</h2>
+
+<div>
+    <h4>ParkingPlace</h4>
+    <hr />
+    @{
+        if (ViewBag.Message != "")
+        {
+            @ViewBag.Message
+        }
+        else
+        {
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.VehicleTypeID)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.VehicleTypeID)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Occupied)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Occupied)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.VehicleRegNumber)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.VehicleRegNumber)
+                </dd>
+
+            </dl>
+
+        }
+
+    }
+</div>    
