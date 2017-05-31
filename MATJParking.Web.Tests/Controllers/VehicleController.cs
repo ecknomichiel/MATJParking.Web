@@ -10,16 +10,16 @@ using MATJParking.Web.Controllers;
 namespace MATJParking.Web.Tests.Controllers
 {
     [TestClass]
-    public class HomeControllerTest
+    public class VehicleController
     {
         [TestMethod]
         public void Index()
         {
             // Arrange
-            HomeController controller = new HomeController();
+            VehicleController controller = new VehicleController();
 
             // Act
-            ViewResult result = controller.Index() as ViewResult;
+            ViewResult result = controller.Index as ViewResult;
 
             // Assert
             Assert.IsNotNull(result);
