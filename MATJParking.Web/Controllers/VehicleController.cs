@@ -56,8 +56,13 @@ namespace MATJParking.Web.Controllers
             ParkingPlace pl = Garage.Instance.SearchPlaceWhereVehicleIsParked(RegistrationNumber);
 
             return View(pl);
-        }																			
+        }
+        public ActionResult Yes(string VehicleRegNumber)
+        {
+            Garage.Instance.CheckOut(VehicleRegNumber);
 
+            return RedirectToAction("Index");
+        }			
         public ActionResult SearchCar(string registrationNumber)
         {
             ParkingPlace pl = Garage.Instance.SearchPlaceWhereVehicleIsParked(registrationNumber);
