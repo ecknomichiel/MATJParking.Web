@@ -33,9 +33,13 @@ namespace MATJParking.Web.Repositories
         {
             return new Vehicle() { VehicleType = aVehicleType };
         }
-        private VehicleType GetVehicleType(int aVehicleTypeId)
+        public VehicleType GetVehicleType(int aVehicleTypeId)
         {
             return context.VehicleTypes.SingleOrDefault(vt => vt.ID == aVehicleTypeId);
+        }
+        public Vehicle CreateVehicle(int VehicleTypeId)
+        {
+            return CreateVehicle(GetVehicleType(VehicleTypeId));
         }
         #endregion
         #region Public Methods

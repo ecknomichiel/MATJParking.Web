@@ -22,33 +22,42 @@ namespace MATJParking.Web.Controllers
         {
             return View(Garage.Instance.GetVehicleTypes());
         }
-
-        public ActionResult CheckIn(string registrationNumber, int? vehicleTypeId)
+        [HttpGet]
+        public ActionResult CheckIn([Bind(Include = "registrationNumber")] CheckInState state)
         {
-            Vehicle vehicle = Garage.Instance.SearchVehicle(registrationNumber);
-            ParkingPlace pl = null;
+            //First time the Checkin is called: search for the car and show any details we might have
 
-            if (vehicleTypeId == null)
+            state.Vehicle = Garage.Instance.SearchVehicle(state.RegistrationNumber);
+                  
+            state.Place = Garage.Instance.SearchPlaceWhereVehicleIsParked(state.RegistrationNumber);
+            if (state.Place != null)
             {
-                ViewBag.Message = "Vehicle type is required";
-                return RedirectToAction("Index");
+                ViewBag.Message = "The car is already parked at place " + state.Place.ID;
+            }
+            return View(state);
+        }
+
+        [HttpPost]
+        public ActionResult CheckIn([Bind(Include = "registrationNumber,vehicleTypeId")] CheckInState state  )
+        {
+            //Read all data from the form into the objects
+            state.Vehicle = Garage.Instance.SearchVehicle(state.RegistrationNumber);
+            if (state.Vehicle == null)
+                state.Vehicle = Garage.Instance.CreateVehicle(state.VehicleTypeId);
+            state.Vehicle.RegNumber = state.RegistrationNumber;
+
+            
+            //Check if data is ready for checking
+            if (state.ReadyToCheckin)
+            {//Check in
+                state.Place = Garage.Instance.CheckIn(registrationNumber, state.VehicleTypeId);
+                return View(state);
             }
 
-            try
-            {
-                pl = Garage.Instance.CheckIn(registrationNumber, vehicleTypeId.Value);
-            }
-            catch (Exception e)
-            {
-                //No space available or vehicle already parked
-                ViewBag.Message = e.Message;
-                //Add a dummy parkingplace with all available vehicle info
-                pl = new ParkingPlace();
-                if (vehicle != null)
-                    pl.Park(vehicle);
-            }
-
-            return View(pl);
+            //Details to be completed: do not checkin an ask to complete details
+            ViewBag.Message = "Please add missing data.";
+            return View(state);
+            
         }
 
         public ActionResult SearchCar(string registrationNumber)
