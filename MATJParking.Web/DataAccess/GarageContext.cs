@@ -15,7 +15,12 @@ namespace MATJParking.Web.DataAccess
 
         public DbSet<Owner> Owners { get; set; }
         public GarageContext() : base("DefaultConnection") { }
-        
+
+
+        internal void AddVehicle(object aVehicleType)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 
