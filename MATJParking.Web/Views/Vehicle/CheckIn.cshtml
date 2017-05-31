@@ -11,38 +11,11 @@
     <hr />
     @{
 
-        @ViewBag.Message
-        
-        if (Model != null)
-        { 
-        <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayNameFor(model => model.VehicleTypeID)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.VehicleTypeID)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.Occupied)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.Occupied)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.VehicleRegNumber)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.VehicleRegNumber)
-            </dd>
-
-        </dl>
-
+        <h6>@ViewBag.Message</h6>
+        if (ViewBag.Message == "")
+        {
+            <h6>Your car was checked in succesfully at the following place:</h6>
         }
-
+         @Html.Partial("_ParkedCar", Model)
     }
 </div>    

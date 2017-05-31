@@ -1,0 +1,29 @@
+﻿@model MATJParking.Web.Models.ParkingPlace
+
+<div>
+    @if (Model != null)
+    {
+
+    <div>
+        <div class="col-md-2 control-label">Place</div><div class="col-md-10">@Model.ID</div>
+    </div>
+        if (Model.Occupied)
+        {
+        <div>
+            <div class="col-md-2 control-label">Vehicle type</div><div class="col-md-10">@Model.Vehicle.VehicleType.Name</div>
+        </div>
+        <div>
+            <div class="col-md-2 control-label">Registration number</div><div class="col-md-10">@Model.Vehicle.RegNumber</div>
+        </div>
+        <div>
+            <div class="col-md-2 control-label">Checkin time</div><div class="col-md-10">@Model.Vehicle.CheckInTime</div>
+        </div>
+        <div>
+            <div class="col-md-2 control-label">Parking time</div><div class="col-md-10">@Math.Round(Model.Vehicle.ParkingTime, 1) hours</div>
+        </div>
+        <div>
+            <div class="col-md-2 control-label">Price up till now</div><div class="col-md-10">@Model.Vehicle.Price SEK</div>
+        </div>
+        }
+    }
+</div>
