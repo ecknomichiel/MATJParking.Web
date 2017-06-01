@@ -23,10 +23,10 @@ namespace MATJParking.Web.Controllers
             return View(Garage.Instance.GetVehicleTypes());
         }
         [HttpGet]
-        public ActionResult CheckIn([Bind(Include = "registrationNumber")] CheckInState state)
+        public ActionResult CheckIn(string registrationNumber)
         {
             //First time the Checkin is called: search for the car and show any details we might have
-
+            CheckInState state = new CheckInState() { RegistrationNumber = registrationNumber };
             state.Vehicle = Garage.Instance.SearchVehicle(state.RegistrationNumber);
                   
             state.Place = Garage.Instance.SearchPlaceWhereVehicleIsParked(state.RegistrationNumber);
@@ -50,7 +50,7 @@ namespace MATJParking.Web.Controllers
             //Check if data is ready for checking
             if (state.ReadyToCheckin)
             {//Check in
-                state.Place = Garage.Instance.CheckIn(registrationNumber, state.VehicleTypeId);
+                state.Place = Garage.Instance.CheckIn(state.RegistrationNumber, state.VehicleTypeId);
                 return View(state);
             }
 
