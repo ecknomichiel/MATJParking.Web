@@ -58,6 +58,7 @@ namespace MATJParking.Web.Models
         public Vehicle()
         {
             VehicleType = new VehicleType();
+            Owner = new Owner();
         }
 
 
