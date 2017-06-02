@@ -21,6 +21,7 @@ namespace MATJParking.Web.Models
         [ForeignKey("VehicleType")]
         public int VehicleTypeID { get { return VehicleType.ID; } }
         public VehicleType VehicleType { get; set; }
+        public Owner Owner { get; set; }
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
