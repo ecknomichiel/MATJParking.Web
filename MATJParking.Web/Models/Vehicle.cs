@@ -54,7 +54,27 @@ namespace MATJParking.Web.Models
                 "\n Current parking time {4} hours\n Current price: SEK {3}", RegNumber, VehicleType, CheckInTime, Price, Math.Round(ParkingTime, 2));
         }
 
+        public Vehicle()
+        {
+            VehicleType = new VehicleType();
+        }
 
-       
+
+
+
+        public void Assign(Vehicle source)
+        {
+            if (source != null)
+            {
+                CheckInTime = source.CheckInTime;
+                CheckOutTime = source.CheckOutTime;
+                VehicleType.Assign(source.VehicleType);
+            }
+            else
+            {
+
+            }
+            
+        }
     }
 }
