@@ -1,4 +1,4 @@
-﻿@model MATJParking.Web.Models.ParkingPlace
+﻿@model MATJParking.Web.Models.CheckInData
 
 @{
     ViewBag.Title = "CheckIn";
@@ -9,13 +9,65 @@
 <div>
     <h4>ParkingPlace</h4>
     <hr />
-    @{
-
-        <h6>@ViewBag.Message</h6>
-        if (ViewBag.Message == "")
+    
+        @switch (Model.State)
         {
-            <h6>Your car was checked in succesfully at the following place:</h6>
-        }
-         @Html.Partial("_ParkedVehicle", Model)
-    }
+            case MATJParking.Web.Models.CheckInState.SearchDone: //First time the Checkin screen is shown. Vehicle and owner have been searched for, data to be entered
+                {
+                    using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(model => model.State);
+
+                    <div class="form-horizontal">
+                        <h4>Vehicle</h4>
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <hr />
+
+                        @if (Model.Vehicle.VehicleType.ID == 0)
+                        {
+                            @Html.Partial("_VehicleType", Model.VehicleTypes);
+                        }
+                        else
+                        {
+                            @Html.LabelFor(model => model.Vehicle.VehicleType, htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.DisplayFor(model => model.Vehicle.VehicleType.Name);
+                            @Html.HiddenFor(model => model.Vehicle.VehicleType.ID);
+                            @Html.HiddenFor(model => model.VehicleTypeId);
+                        }
+                            
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.RegistrationNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.DisplayFor(model => model.RegistrationNumber)
+                                @Html.HiddenFor(model => model.RegistrationNumber);
+                            </div>
+                        </div>
+
+                        @Html.Partial("_OwnerEdit", Model.Owner)
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Save" class="btn btn-default" />
+                            </div>
+                        </div>
+                    </div>
+                    }
+                    break;
+                }
+
+            case MATJParking.Web.Models.CheckInState.NoPlaceForVehicle:
+                {
+                    <h6>There is no empty place for your @Model.Vehicle.VehicleType.Name</h6>
+                    break;
+                }
+            case MATJParking.Web.Models.CheckInState.Parked: // Last time Checkin is shown. The vehicle is parked and information about it is shown.
+                {
+                    <h6>The vehicle has been assigned a parking place</h6>
+                    @Html.Partial("_ParkedVehicle", Model.Place)
+                    break;
+                }
+                
+        }//End switch
+   
 </div>    

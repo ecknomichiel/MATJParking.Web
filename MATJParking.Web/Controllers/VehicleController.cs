@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using MATJParking.Web.Models;
 using MATJParking.Web.Repositories;
+using MATJParking.Web.ModelBinder;
 
 
 namespace MATJParking.Web.Controllers
@@ -19,41 +20,60 @@ namespace MATJParking.Web.Controllers
         {
             return View(Garage.Instance.GetVehicleTypes());
         }
-        [HttpGet]
-        public ActionResult CheckIn(string registrationNumber)
-        {
-            //First time the Checkin is called: search for the car and show any details we might have
-            CheckInState state = new CheckInState() { RegistrationNumber = registrationNumber };
-            state.Vehicle = Garage.Instance.SearchVehicle(state.RegistrationNumber);
-                  
-            state.Place = Garage.Instance.SearchPlaceWhereVehicleIsParked(state.RegistrationNumber);
-            if (state.Place != null)
-            {
-                ViewBag.Message = "The car is already parked at place " + state.Place.ID;
-            }
-            return View(state);
-        }
-
         [HttpPost]
-        public ActionResult CheckIn([Bind(Include = "registrationNumber,vehicleTypeId")] CheckInState state  )
+        public ActionResult CheckIn([ModelBinder(typeof(CheckinDataModelBinder))] CheckInData checkInData)
         {
-            //Read all data from the form into the objects
-            state.Vehicle = Garage.Instance.SearchVehicle(state.RegistrationNumber);
-            if (state.Vehicle == null)
-                state.Vehicle = Garage.Instance.CreateVehicle(state.VehicleTypeId);
-            state.Vehicle.RegNumber = state.RegistrationNumber;
 
-            
-            //Check if data is ready for checking
-            if (state.ReadyToCheckin)
-            {//Check in
-                state.Place = Garage.Instance.CheckIn("registrationNumber", state.VehicleTypeId);
-                return View(state);
+            if (checkInData.RegistrationNumber == "")
+            {
+                checkInData.RegistrationNumber = ViewData["registrationNumber"] as string;
             }
+            switch (checkInData.State)
+            {
+                case CheckInState.Initial:
+                    {//First time the Checkin is called: search for the car and show any details we might have
+                        checkInData.Vehicle.Assign(Garage.Instance.SearchVehicle(checkInData.RegistrationNumber));
+                        checkInData.State = CheckInState.SearchDone;
+                        ParkingPlace pl = Garage.Instance.SearchPlaceWhereVehicleIsParked(checkInData.RegistrationNumber);
+                        if (pl != null)
+                        {
+                            checkInData.Place = pl;
+                            checkInData.State = CheckInState.AlreadyParked;
+                        }
+                        checkInData.VehicleTypes = Garage.Instance.GetVehicleTypes();
+                        return View(checkInData);
+                    }
+                case CheckInState.SearchDone:
+                    {
+                        //Check if data is ready for checkin
+                        try
+                        {
+                            checkInData.Place = Garage.Instance.CheckIn(checkInData);
+                        }
+                        catch (ENoPlaceForVehicle e)
+                        {
+                            ViewBag.Message = e.Message;
+                            if (e.GetType() == typeof(ENoPlaceForVehicle))
+                            {
+                                checkInData.State = CheckInState.NoPlaceForVehicle;
+                            }
+                            if (e.GetType() == typeof(EVehicleAlreadyCheckedIn))
+                            {
+                                checkInData.State = CheckInState.AlreadyParked;
+                                checkInData.Place = Garage.Instance.SearchPlaceWhereVehicleIsParked(checkInData.Vehicle.RegNumber);
+                            }
+                            throw;
+                        }
+                        return View(checkInData);
+                    }
+            }
+            
+            
+            
+            
 
             //Details to be completed: do not checkin an ask to complete details
-            ViewBag.Message = "Please add missing data.";
-            return View(state);
+            return View(checkInData);
             
         }
         // CheckOut                               

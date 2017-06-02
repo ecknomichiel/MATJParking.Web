@@ -127,8 +127,13 @@
     <Compile Include="Migrations\201705301430275_Initial.Designer.cs">
       <DependentUpon>201705301430275_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201706021020143_Owner.cs" />
+    <Compile Include="Migrations\201706021020143_Owner.Designer.cs">
+      <DependentUpon>201706021020143_Owner.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\CheckInAdapter.cs" />
+    <Compile Include="ModelBinder\CheckinDataModelBinder.cs" />
+    <Compile Include="Models\CheckInData.cs" />
     <Compile Include="Models\Owner.cs" />
     <Compile Include="Models\ParkingPlace.cs" />
     <Compile Include="Models\Vehicle.cs" />
@@ -178,8 +183,7 @@
     <Content Include="Views\Vehicle\_ParkedVehicle.cshtml" />
     <Content Include="Views\Vehicle\SearchCar.cshtml" />
     <Content Include="Views\Vehicle\CheckOut.cshtml" />
-    <Content Include="Views\_temp\_Vehicle.cshtml" />
-    <Content Include="Views\_temp\_Owner.cshtml" />
+    <Content Include="Views\Vehicle\_OwnerEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -194,6 +198,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201705301430275_Initial.resx">
       <DependentUpon>201705301430275_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706021020143_Owner.resx">
+      <DependentUpon>201706021020143_Owner.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
