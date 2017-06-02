@@ -1,9 +1,6 @@
 ﻿@model MATJParking.Web.Models.Vehicle
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Vehicle</h4>
         <hr />
@@ -34,6 +31,3 @@
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
