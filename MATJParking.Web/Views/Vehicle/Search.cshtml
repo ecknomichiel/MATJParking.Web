@@ -1,0 +1,39 @@
+﻿@model IEnumerable<MATJParking.Web.Models.ParkingPlace>
+
+@{
+    ViewBag.Title = "Search";
+}
+
+        <h2>Search vehicle</h2>
+    
+        @foreach ( var item in Model)
+        {
+            <table class="table">
+                <thead class="thead-inverse">
+                    <tr>
+                        <th>Place</th>
+                        <th>Vehicle type</th>
+                        <th>Registration number</th>
+                        <th>Checkin time</th>
+                        <th>Parking time</th>
+                        <th>Price up till now</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row"></th>
+                        <td>@item.ID</td>_ParkedVehicle
+                        @if (item.Occupied)
+                        {
+                            <td>@Html.DisplayFor(modelItem => item.Vehicle.VehicleType.Name)</td>
+                            <td>@item.Vehicle.RegNumber</td>
+                            <td>@item.Vehicle.CheckInTime</td>
+                            <td>@Math.Round(item.Vehicle.ParkingTime, 1) hours</td>
+                            <td>@item.Vehicle.Price SEK</td>
+                        }
+
+                    </tr>
+                </tbody>
+            </table>
+        }
+
