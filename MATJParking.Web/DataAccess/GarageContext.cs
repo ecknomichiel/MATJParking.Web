@@ -12,15 +12,14 @@ namespace MATJParking.Web.DataAccess
         public DbSet<VehicleType> VehicleTypes { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<ParkingPlace> ParkingPlaces { get; set; }
-
         public DbSet<Owner> Owners { get; set; }
+
+        public Vehicle GetVehicleByID(string RegNumber)
+        {
+            return Vehicles.SingleOrDefault(v => v.RegNumber == RegNumber);//.Include(v => v.Owner);
+        }
         public GarageContext() : base("DefaultConnection") { }
 
-
-        internal void AddVehicle(object aVehicleType)
-        {
-            throw new NotImplementedException();
-        }
     }
 
 

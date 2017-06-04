@@ -6,58 +6,89 @@ using System.Web;
 using System.Web.Mvc;
 using MATJParking.Web.Models;
 using MATJParking.Web.Repositories;
+using MATJParking.Web.ModelBinder;
 
 
 namespace MATJParking.Web.Controllers
 {
     public class VehicleController : Controller
     {
-        public VehicleController()
-         {
-           
-         }
+        public VehicleController() {}
     
         // GET: Vehicle
         public ActionResult Index()
         {
             return View(Garage.Instance.GetVehicleTypes());
         }
-
-        public ActionResult CheckIn(string registrationNumber, int? vehicleTypeId)
+        [HttpPost]
+        public ActionResult CheckIn([ModelBinder(typeof(CheckinDataModelBinder))] CheckInData checkInData)
         {
-            Vehicle vehicle = Garage.Instance.SearchVehicle(registrationNumber);
-            ParkingPlace pl = null;
 
-            if (vehicleTypeId == null)
+            if (checkInData.RegistrationNumber == "")
             {
-                ViewBag.Message = "Vehicle type is required";
-                return RedirectToAction("Index");
+                checkInData.RegistrationNumber = ViewData["registrationNumber"] as string;
             }
+            switch (checkInData.State)
+            {
+                case CheckInState.Initial:
+                    {//First time the Checkin is called: search for the car and show any details we might have
+                        checkInData.Vehicle.Assign(Garage.Instance.SearchVehicle(checkInData.RegistrationNumber));
+                        checkInData.State = CheckInState.SearchDone;
+                        ParkingPlace pl = Garage.Instance.SearchPlaceWhereVehicleIsParked(checkInData.RegistrationNumber);
+                        if (pl != null)
+                        {
+                            checkInData.Place = pl;
+                            checkInData.State = CheckInState.AlreadyParked;
+                        }
+                        checkInData.VehicleTypes = Garage.Instance.GetVehicleTypes();
+                        return View(checkInData);
+                    }
+                case CheckInState.SearchDone:
+                    {
+                        //Check if data is ready for checkin
+                        try
+                        {
+                            checkInData.Place = Garage.Instance.CheckIn(checkInData);
+                        }
+                        catch (ENoPlaceForVehicle e)
+                        {
+                            ViewBag.Message = e.Message;
+                            if (e.GetType() == typeof(ENoPlaceForVehicle))
+                            {
+                                checkInData.State = CheckInState.NoPlaceForVehicle;
+                            }
+                            if (e.GetType() == typeof(EVehicleAlreadyCheckedIn))
+                            {
+                                checkInData.State = CheckInState.AlreadyParked;
+                                checkInData.Place = Garage.Instance.SearchPlaceWhereVehicleIsParked(checkInData.Vehicle.RegNumber);
+                            }
+                            throw;
+                        }
+                        return View(checkInData);
+                    }
+            }
+            
+            
+            
+            
 
-            try
-            {
-                pl = Garage.Instance.CheckIn(registrationNumber, vehicleTypeId.Value);
-            }
-            catch (Exception e)
-            {
-                //No space available or vehicle already parked
-                ViewBag.Message = e.Message;
-                //Add a dummy parkingplace with all available vehicle info
-                pl = new ParkingPlace();
-                if (vehicle != null)
-                    pl.Park(vehicle);
-            }
-
-            return View(pl);
+            //Details to be completed: do not checkin an ask to complete details
+            return View(checkInData);
+            
         }
-                                            // CheckOut
+        // CheckOut                               
         public ActionResult CheckOut(string RegistrationNumber)
         {
             ParkingPlace pl = Garage.Instance.SearchPlaceWhereVehicleIsParked(RegistrationNumber);
 
             return View(pl);
-        }																			
+        }
+        public ActionResult Yes(string VehicleRegNumber)
+        {
+            Garage.Instance.CheckOut(VehicleRegNumber);
 
+            return RedirectToAction("Index");
+        }			
         public ActionResult SearchCar(string registrationNumber)
         {
             ParkingPlace pl = Garage.Instance.SearchPlaceWhereVehicleIsParked(registrationNumber);

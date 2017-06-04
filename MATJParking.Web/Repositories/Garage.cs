@@ -33,15 +33,19 @@ namespace MATJParking.Web.Repositories
         {
             return new Vehicle() { VehicleType = aVehicleType };
         }
-        private VehicleType GetVehicleType(int aVehicleTypeId)
+        public VehicleType GetVehicleType(int aVehicleTypeId)
         {
             return context.VehicleTypes.SingleOrDefault(vt => vt.ID == aVehicleTypeId);
         }
+        public Vehicle CreateVehicle(int VehicleTypeId)
+        {
+            return CreateVehicle(GetVehicleType(VehicleTypeId));
+        }
         #endregion
         #region Public Methods
-        public ParkingPlace CheckIn(string RegistrationNumber, int aVehicleTypeId)
+        public ParkingPlace CheckIn(CheckInData data)
         {
-            string uRegNr = RegistrationNumber.ToUpper();
+            string uRegNr = data.RegistrationNumber.ToUpper();
             ParkingPlace place = SearchPlaceWhereVehicleIsParked(uRegNr);
             if (place != null)
                 throw new EVehicleAlreadyCheckedIn(uRegNr, place.ID);
@@ -50,8 +54,9 @@ namespace MATJParking.Web.Repositories
             vehicle = SearchVehicle(uRegNr);
             if (vehicle == null)
             {
-                VehicleType vt = GetVehicleType(aVehicleTypeId);
+                VehicleType vt = GetVehicleType(data.VehicleTypeId);
                 vehicle = CreateVehicle(vt);
+                vehicle.Owner = data.Owner;
                 vehicle.RegNumber = uRegNr;
                 context.Vehicles.Add(vehicle);
             }

@@ -10,9 +10,10 @@
 
 @Html.Partial("_ParkedVehicle", Model)
 
-
-
-<div class="ChekOtButtons">
-    <button type="submit" class="btn btn-success" formaction="~/Vehicle/Yes">Yes</button>
-    <button type="submit" class="btn btn-primary" formaction="~/Vehicle/No">No</button>
-</div>
+<form action="post">
+@Html.HiddenFor(pl => pl.VehicleRegNumber)
+    <div class="CheckOutButtons">
+        <button type="submit" class="btn btn-success" formaction="~/Vehicle/Yes">Yes</button>
+        <button type="submit" class="btn btn-primary" formaction="~/Vehicle/Index">No</button>
+    </div>
+</form>
