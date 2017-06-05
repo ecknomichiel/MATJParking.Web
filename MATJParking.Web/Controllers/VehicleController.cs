@@ -49,6 +49,7 @@ namespace MATJParking.Web.Controllers
                         try
                         {
                             checkInData.Place = Garage.Instance.CheckIn(checkInData);
+                            checkInData.State = CheckInState.Parked;
                         }
                         catch (ENoPlaceForVehicle e)
                         {
