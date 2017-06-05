@@ -144,7 +144,7 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\myStyle.css" />
+    <Content Include="Content\bootstrap-lumen.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -183,8 +183,8 @@
     <Content Include="Views\Vehicle\_ParkedVehicle.cshtml" />
     <Content Include="Views\Vehicle\SearchCar.cshtml" />
     <Content Include="Views\Vehicle\CheckOut.cshtml" />
-    <Content Include="Views\Vehicle\Search.cshtml" />
     <Content Include="Views\Vehicle\_OwnerEdit.cshtml" />
+    <Content Include="Views\Vehicle\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
