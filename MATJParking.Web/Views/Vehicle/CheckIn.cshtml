@@ -17,38 +17,38 @@
                     using (Html.BeginForm())
                     {
                         @Html.AntiForgeryToken()
-                        @Html.HiddenFor(model => model.State);
+                        @Html.HiddenFor(model => model.State)
 
                     <div class="form-horizontal">
-                        <h4>Vehicle</h4>
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                        <hr />
 
                         @if (Model.Vehicle.VehicleType.ID == 0)
                         {
-                            @Html.Partial("_VehicleType", Model.VehicleTypes);
+                            @Html.Partial("_VehicleType", Model.VehicleTypes)
                         }
                         else
                         {
-                            @Html.LabelFor(model => model.Vehicle.VehicleType, htmlAttributes: new { @class = "control-label col-md-2" })
-                            @Html.DisplayFor(model => model.Vehicle.VehicleType.Name)
-                            @Html.HiddenFor(model => model.Vehicle.VehicleType.ID);
-                            @Html.HiddenFor(model => model.VehicleTypeId);
+                            <div class="form-group">
+                                <label class="col-md-2">Vehicle type</label>
+                                <div class="col-md-10">@Model.Vehicle.VehicleType.Name </div>
+                            </div>
+                            @Html.HiddenFor(model => model.Vehicle.VehicleType.ID)
+                            @Html.HiddenFor(model => model.VehicleTypeId)
                         }
                             
                         <div class="form-group">
-                            @Html.LabelFor(model => model.RegistrationNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+                            @Html.LabelFor(model => model.RegistrationNumber, htmlAttributes: new { @class = "col-md-2" })
                             <div class="col-md-10">
-                                @Html.DisplayFor(model => model.RegistrationNumber)
-                                @Html.HiddenFor(model => model.RegistrationNumber);
+                                @Html.DisplayFor(model => model.RegistrationNumber)       
                             </div>
+                            @Html.HiddenFor(model => model.RegistrationNumber)
                         </div>
 
                         @Html.Partial("_OwnerEdit", Model.Owner)
 
                         <div class="form-group">
                             <div class="col-md-offset-2 col-md-10">
-                                <input type="submit" value="Save" class="btn btn-default" />
+                                <input type="submit" value="Check in" class="btn btn-success" />
                             </div>
                         </div>
                     </div>
@@ -58,18 +58,18 @@
 
             case MATJParking.Web.Models.CheckInState.NoPlaceForVehicle:
                 {
-                    <h6>There is no empty place for your @Model.Vehicle.VehicleType.Name</h6>
+                    <h4>There is no empty place for your @Model.Vehicle.VehicleType.Name</h4>
                     break;
                 }
             case MATJParking.Web.Models.CheckInState.AlreadyParked:
                 {
-                    <h6>The car is already parked.</h6>
+                    <h4>The car is already parked.</h4>
                     @Html.Partial("_ParkedVehicle", Model.Place)
                     break;
                 }
             case MATJParking.Web.Models.CheckInState.Parked: // Last time Checkin is shown. The vehicle is parked and information about it is shown.
                 {
-                    <h6>The vehicle has been assigned a parking place</h6>
+                    <h4>The vehicle has been assigned a parking place</h4>
                     @Html.Partial("_ParkedVehicle", Model.Place)
                     break;
                 }

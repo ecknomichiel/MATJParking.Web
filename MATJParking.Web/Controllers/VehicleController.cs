@@ -51,7 +51,7 @@ namespace MATJParking.Web.Controllers
                             checkInData.Place = Garage.Instance.CheckIn(checkInData);
                             checkInData.State = CheckInState.Parked;
                         }
-                        catch (ENoPlaceForVehicle e)
+                        catch (Exception e)
                         {
                             ViewBag.Message = e.Message;
                             if (e.GetType() == typeof(ENoPlaceForVehicle))
@@ -93,6 +93,11 @@ namespace MATJParking.Web.Controllers
                 ViewBag.Message = "Cannot find car with registrationnumber " + registrationNumber;
             }
             return View(pl);
+        }
+
+        public ActionResult Overview()
+        {
+            return View(Garage.Instance.GetOverview());
         }
     }
 }

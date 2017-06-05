@@ -64,7 +64,7 @@ namespace MATJParking.Web.Repositories
             
            // try
             { //If there is no available space for this type of car, an exception is raised (sequence contains no elements)
-                place = AvailableParkingPlaceForVehicleType(vehicle.VehicleType.ID).FirstOrDefault();
+                place = AvailableParkingPlaceForVehicleType(vehicle.VehicleType).FirstOrDefault();
             }
            // catch (Exception)
             if (place == null)
@@ -77,12 +77,13 @@ namespace MATJParking.Web.Repositories
             return place;
         }
 
-        private IEnumerable<ParkingPlace> AvailableParkingPlaceForVehicleType(int vehicleTypeId)
+        private IEnumerable<ParkingPlace> AvailableParkingPlaceForVehicleType(VehicleType vehicleType)
         {
-            VehicleType vt = GetVehicleType(vehicleTypeId);
-            return ParkingPlaces.Where(pl => pl.VehicleType == vt )
+            return ParkingPlaces.Where(pl => pl.VehicleType == vehicleType )
                                             .Where(pl => !pl.Occupied);
         }
+
+
 
         public void CheckOut(string RegistrationNumber)
         {
@@ -108,6 +109,14 @@ namespace MATJParking.Web.Repositories
                 return ParkingPlaces.Where(pl => pl.Occupied && pl.Vehicle.Price >= aPrice);
             else
                 return ParkingPlaces.Where(pl => pl.Occupied && pl.Vehicle.Price <= aPrice);
+        }
+
+        public IEnumerable<OverviewLine> GetOverview()
+        {
+            foreach (VehicleType vt in GetVehicleTypes())
+            {
+                yield return new OverviewLine() { VehicleType = vt, NumAvailablePlaces = AvailableParkingPlaceForVehicleType(vt).Count() };
+            }
         }
 
         public IEnumerable<ParkingPlace> SearchAllParkedVehiclesOnParkingTime(double hours, bool greaterThan)

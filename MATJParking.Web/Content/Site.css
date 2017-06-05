@@ -22,5 +22,8 @@
 input,
 select,
 textarea {
-    max-width: ;
+    max-width:40em;
+}
+.btn {
+    width:8em;
 }

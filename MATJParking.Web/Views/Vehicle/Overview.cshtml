@@ -1,0 +1,25 @@
+﻿@model IEnumerable<MATJParking.Web.Models.OverviewLine>
+
+@{
+    ViewBag.Title = "Overview";
+}
+
+<h2>Overview</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.NumAvailablePlaces)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.NumAvailablePlaces)
+        </td>
+    </tr>
+}
+
+</table>

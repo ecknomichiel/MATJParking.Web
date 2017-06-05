@@ -130,6 +130,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ModelBinder\CheckinDataModelBinder.cs" />
     <Compile Include="Models\CheckInData.cs" />
+    <Compile Include="Models\OverviewLine.cs" />
     <Compile Include="Models\Owner.cs" />
     <Compile Include="Models\ParkingPlace.cs" />
     <Compile Include="Models\Vehicle.cs" />
@@ -181,6 +182,7 @@
     <Content Include="Views\Vehicle\CheckOut.cshtml" />
     <Content Include="Views\Vehicle\Search.cshtml" />
     <Content Include="Views\Vehicle\_OwnerEdit.cshtml" />
+    <Content Include="Views\Vehicle\Overview.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
