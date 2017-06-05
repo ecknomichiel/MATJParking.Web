@@ -99,5 +99,20 @@ namespace MATJParking.Web.Controllers
         {
             return View(Garage.Instance.GetOverview());
         }
+
+        public ActionResult Search(string dropDown, string searchValue)
+        {
+            switch (dropDown)
+            {
+                case "1":
+                    return View(Garage.Instance.SearchAllParkedVehicles());
+                case "2":
+                    double sv;
+                    double.TryParse(searchValue, out sv);
+                    
+                    return View(Garage.Instance.SearchAllParkedVehiclesOnPrice(sv, true));
+            }
+            return View(Garage.Instance.SearchAllParkedVehicles());
+        }
     }
 }

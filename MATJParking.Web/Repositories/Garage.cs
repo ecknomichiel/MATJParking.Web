@@ -113,7 +113,9 @@ namespace MATJParking.Web.Repositories
 
         public IEnumerable<OverviewLine> GetOverview()
         {
-            foreach (VehicleType vt in GetVehicleTypes())
+            List<VehicleType> types = new List<VehicleType>();
+            types.AddRange(GetVehicleTypes());
+            foreach (VehicleType vt in types)
             {
                 yield return new OverviewLine() { VehicleType = vt, NumAvailablePlaces = AvailableParkingPlaceForVehicleType(vt).Count() };
             }

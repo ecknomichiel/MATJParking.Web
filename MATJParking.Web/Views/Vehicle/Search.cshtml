@@ -1,39 +1,73 @@
-﻿@model IEnumerable<MATJParking.Web.Models.ParkingPlace>
-
+﻿@model  IEnumerable< MATJParking.Web.Models.ParkingPlace>
 @{
     ViewBag.Title = "Search";
 }
 
-        <h2>Search vehicle</h2>
+<h2>Search</h2>
+<form>
+    <p class="lead"></p>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-8 col-xs-offset-2">
+                <div class="input-group">
+                    <div class="input-group-btn search-panel">
+                        @*<button type="button" class=" btn btn-default dropdown-toggle" data-toggle="dropdown">
+                            <span id="search_concept">Filter by</span> <span class="caret"></span>
+                        </button>*@
+                        
+                        <select  class=" form-control  " id="dropDown" name="dropDown" >
+                            
+                            <option value="1">Parked Vehicles</option>
+                            <option value="2">Price greater than</option>
+
+                        </select>
+
+                    </div>
+                    <input type="hidden" name="search_param" value="all" id="search_param">
+                    <input type="text" class="form-control" name="searchValue" placeholder="Search vehicle...">
+                    <span class="input-group-btn">
+                        <input class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></input>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+    <!-- Header-->
     
-        @foreach ( var item in Model)
-        {
-            <table class="table">
-                <thead class="thead-inverse">
+        <div class="container">
+            <br />
+       
+            <table class="table table-striped">
+                <thead>
                     <tr>
-                        <th>Place</th>
-                        <th>Vehicle type</th>
-                        <th>Registration number</th>
-                        <th>Checkin time</th>
-                        <th>Parking time</th>
-                        <th>Price up till now</th>
+                        <th>ID</th>
+                        <th>registration number</th>
+                        <th>Vehicle Type</th>
+                        <th>ParkingTime</th>
+                        <th>Price</th>
                     </tr>
                 </thead>
+
+                           @foreach (MATJParking.Web.Models.ParkingPlace place in Model)
+            {
                 <tbody>
                     <tr>
-                        <th scope="row"></th>
-                        <td>@item.ID</td>_ParkedVehicle
-                        @if (item.Occupied)
-                        {
-                            <td>@Html.DisplayFor(modelItem => item.Vehicle.VehicleType.Name)</td>
-                            <td>@item.Vehicle.RegNumber</td>
-                            <td>@item.Vehicle.CheckInTime</td>
-                            <td>@Math.Round(item.Vehicle.ParkingTime, 1) hours</td>
-                            <td>@item.Vehicle.Price SEK</td>
-                        }
-
+                        <td>@place.ID</td>
+                        <td>@place.VehicleRegNumber</td>
+                        <td>@place.Vehicle.VehicleType.Name</td>
+                        <td>@place.Vehicle.ParkingTime</td>
+                        <td>@place.Vehicle.Price</td>
                     </tr>
+
                 </tbody>
+                }
             </table>
-        }
+        </div>
+
+
+
+
 
