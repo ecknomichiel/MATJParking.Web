@@ -38,7 +38,11 @@ namespace MATJParking.Web.Models
                     return vehicle.RegNumber;
             } 
         }
-        public Vehicle Vehicle { get { return vehicle; } }
+        public Vehicle Vehicle 
+        { 
+            get { return vehicle; }
+            set { vehicle = value; } //Use only in case of loading from database!!!!
+        }
 
 
         public void Park(Vehicle aVehicle)
@@ -48,7 +52,6 @@ namespace MATJParking.Web.Models
         }
         public void Unpark()
         {
-            vehicle.CheckOutTime = DateTime.Now;
             vehicle = null;
         }
         public override string ToString()

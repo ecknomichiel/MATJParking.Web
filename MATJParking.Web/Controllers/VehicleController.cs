@@ -63,16 +63,11 @@ namespace MATJParking.Web.Controllers
                                 checkInData.State = CheckInState.AlreadyParked;
                                 checkInData.Place = Garage.Instance.SearchPlaceWhereVehicleIsParked(checkInData.Vehicle.RegNumber);
                             }
-                            throw;
                         }
                         return View(checkInData);
                     }
             }
             
-            
-            
-            
-
             //Details to be completed: do not checkin an ask to complete details
             return View(checkInData);
             

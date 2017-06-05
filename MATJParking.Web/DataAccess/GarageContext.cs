@@ -16,10 +16,51 @@ namespace MATJParking.Web.DataAccess
 
         public Vehicle GetVehicleByID(string RegNumber)
         {
-            return Vehicles.SingleOrDefault(v => v.RegNumber == RegNumber);//.Include(v => v.Owner);
+            return Vehicles.Include(v => v.Owner)
+                            .Include(v => v.VehicleType)
+                            .SingleOrDefault(v => v.RegNumber.ToUpper() == RegNumber.ToUpper());
         }
         public GarageContext() : base("DefaultConnection") { }
 
+
+        public void AddVehicle(Vehicle vehicle)
+        {
+            SaveOwner(vehicle.Owner);
+            if (vehicle != null && vehicle.VehicleType != null)
+            {
+                vehicle.VehicleType = GetVehicleTypeByID(vehicle.VehicleType.ID); //Make sure the vehicletype from the db is used
+                Vehicles.Add(vehicle);
+            }     
+        }
+
+        private void SaveOwner(Owner owner)
+        {
+            Owner target = Owners.Find(owner.Id);
+            if (target == null)
+                Owners.Add(owner);
+            else
+                target.Assign(owner);
+        }
+
+        public VehicleType GetVehicleTypeByID(int vehicleTypeId)
+        {
+            return VehicleTypes.Single(vt => vt.ID == vehicleTypeId);
+        }
+
+        public void UpdateVehicle(Vehicle vehicle)
+        {
+            Vehicle target = GetVehicleByID(vehicle.RegNumber);
+            vehicle.VehicleType = GetVehicleTypeByID(vehicle.VehicleType.ID);
+            target.Assign(vehicle);
+        }
+
+        public IEnumerable<ParkingPlace> GetAllParkingPlaces()
+        {
+            return ParkingPlaces;
+              /*  .Include(p => p.Vehicle)
+                                .Include(p => p.Vehicle.VehicleType)
+                                .Include(p => p.Vehicle.Owner);*/
+        }
     }
 
 

@@ -123,13 +123,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201705301430275_Initial.cs" />
-    <Compile Include="Migrations\201705301430275_Initial.Designer.cs">
-      <DependentUpon>201705301430275_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201706021020143_Owner.cs" />
-    <Compile Include="Migrations\201706021020143_Owner.Designer.cs">
-      <DependentUpon>201706021020143_Owner.cs</DependentUpon>
+    <Compile Include="Migrations\201706051101152_NewInitial.cs" />
+    <Compile Include="Migrations\201706051101152_NewInitial.Designer.cs">
+      <DependentUpon>201706051101152_NewInitial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ModelBinder\CheckinDataModelBinder.cs" />
@@ -197,11 +193,8 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201705301430275_Initial.resx">
-      <DependentUpon>201705301430275_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706021020143_Owner.resx">
-      <DependentUpon>201706021020143_Owner.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201706051101152_NewInitial.resx">
+      <DependentUpon>201706051101152_NewInitial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

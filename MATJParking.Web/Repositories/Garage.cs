@@ -28,14 +28,14 @@ namespace MATJParking.Web.Repositories
         }
         #endregion
         #region Private Methods
-        private IEnumerable<ParkingPlace> ParkingPlaces { get { return context.ParkingPlaces; } }
+        private IEnumerable<ParkingPlace> ParkingPlaces { get { return context.GetAllParkingPlaces(); } }
         private Vehicle CreateVehicle(VehicleType aVehicleType)
         {
             return new Vehicle() { VehicleType = aVehicleType };
         }
         public VehicleType GetVehicleType(int aVehicleTypeId)
         {
-            return context.VehicleTypes.SingleOrDefault(vt => vt.ID == aVehicleTypeId);
+            return context.GetVehicleTypeByID(aVehicleTypeId);
         }
         public Vehicle CreateVehicle(int VehicleTypeId)
         {
@@ -45,11 +45,13 @@ namespace MATJParking.Web.Repositories
         #region Public Methods
         public ParkingPlace CheckIn(CheckInData data)
         {
+            //Check if vehicle is already parked
             string uRegNr = data.RegistrationNumber.ToUpper();
             ParkingPlace place = SearchPlaceWhereVehicleIsParked(uRegNr);
             if (place != null)
                 throw new EVehicleAlreadyCheckedIn(uRegNr, place.ID);
 
+            //Lookup and store vehicle data
             Vehicle vehicle;
             vehicle = SearchVehicle(uRegNr);
             if (vehicle == null)
@@ -58,23 +60,28 @@ namespace MATJParking.Web.Repositories
                 vehicle = CreateVehicle(vt);
                 vehicle.Owner = data.Owner;
                 vehicle.RegNumber = uRegNr;
-                context.Vehicles.Add(vehicle);
-            }
+            }     
             
-            
-            try
+           // try
             { //If there is no available space for this type of car, an exception is raised (sequence contains no elements)
-                place = ParkingPlaces.Where(pl => pl.VehicleType == vehicle.VehicleType)
-                                                .Where(pl => !pl.Occupied)
-                                                .First();
+                place = AvailableParkingPlaceForVehicleType(vehicle.VehicleType.ID).FirstOrDefault();
             }
-            catch (Exception)
+           // catch (Exception)
+            if (place == null)
             {// Throw our own exception with a custom message text
                 throw new ENoPlaceForVehicle(vehicle.VehicleType.Name);
             }
             place.Park(vehicle);
+            context.SaveChanges();
 
             return place;
+        }
+
+        private IEnumerable<ParkingPlace> AvailableParkingPlaceForVehicleType(int vehicleTypeId)
+        {
+            VehicleType vt = GetVehicleType(vehicleTypeId);
+            return ParkingPlaces.Where(pl => pl.VehicleType == vt )
+                                            .Where(pl => !pl.Occupied);
         }
 
         public void CheckOut(string RegistrationNumber)
@@ -83,6 +90,7 @@ namespace MATJParking.Web.Repositories
             if (place == null)
                 throw new EVehicleNotFound(RegistrationNumber);
             place.Unpark();
+            context.SaveChanges();
         }
         #endregion
         #region Search
@@ -111,10 +119,10 @@ namespace MATJParking.Web.Repositories
         }
         public Vehicle SearchVehicle(string aRegistrationNumber)
         {
-            return context.Vehicles.SingleOrDefault(veh => veh.RegNumber.ToUpper() == aRegistrationNumber.ToUpper());
+            return context.GetVehicleByID(aRegistrationNumber);
         }
         public ParkingPlace SearchPlaceWhereVehicleIsParked(string aRegistrationNumber)
-        {// Can throw an exception if a programmer bypassed the checkin function to park a car
+        {// Can throw an exception if a programmer bypassed the checkin function to park a vehicle and parked a vehicle twice
             return ParkingPlaces.SingleOrDefault(pl => pl.Occupied && pl.VehicleRegNumber.ToUpper() == aRegistrationNumber.ToUpper());
         }
         public IEnumerable<VehicleType> GetVehicleTypes()
