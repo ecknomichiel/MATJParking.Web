@@ -46,11 +46,6 @@
                 <label for="usr">Registration number :</label>
                 <input type="text" class="form-control" id="number" name="registrationNumber">
             </div>
-
-            <div class="form-group">
-                @Html.Partial("_VehicleType", Model)
-            </div>
-
         </div>
         <div class="pageButtons">
             <button type="submit" class="btn btn-success" formaction="~/Vehicle/CheckIn">Check in</button>

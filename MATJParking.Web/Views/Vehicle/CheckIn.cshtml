@@ -31,7 +31,7 @@
                         else
                         {
                             @Html.LabelFor(model => model.Vehicle.VehicleType, htmlAttributes: new { @class = "control-label col-md-2" })
-                            @Html.DisplayFor(model => model.Vehicle.VehicleType.Name);
+                            @Html.DisplayFor(model => model.Vehicle.VehicleType.Name)
                             @Html.HiddenFor(model => model.Vehicle.VehicleType.ID);
                             @Html.HiddenFor(model => model.VehicleTypeId);
                         }
@@ -61,6 +61,12 @@
                     <h6>There is no empty place for your @Model.Vehicle.VehicleType.Name</h6>
                     break;
                 }
+            case MATJParking.Web.Models.CheckInState.AlreadyParked:
+                {
+                    <h6>The car is already parked.</h6>
+                    @Html.Partial("_ParkedVehicle", Model.Place)
+                    break;
+                }
             case MATJParking.Web.Models.CheckInState.Parked: // Last time Checkin is shown. The vehicle is parked and information about it is shown.
                 {
                     <h6>The vehicle has been assigned a parking place</h6>
@@ -68,6 +74,6 @@
                     break;
                 }
                 
-        }//End switch
+        }<!--End switch-->
    
 </div>    
