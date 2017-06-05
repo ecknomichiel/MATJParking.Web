@@ -7,13 +7,13 @@ namespace MATJParking.Web.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class Initial : IMigrationMetadata
+    public sealed partial class NewInitial : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Initial));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(NewInitial));
         
         string IMigrationMetadata.Id
         {
-            get { return "201705301430275_Initial"; }
+            get { return "201706051101152_NewInitial"; }
         }
         
         string IMigrationMetadata.Source

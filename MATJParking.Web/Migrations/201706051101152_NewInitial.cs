@@ -3,7 +3,7 @@ namespace MATJParking.Web.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Initial : DbMigration
+    public partial class NewInitial : DbMigration
     {
         public override void Up()
         {
@@ -11,21 +11,39 @@ namespace MATJParking.Web.Migrations
                 "dbo.Owners",
                 c => new
                     {
-                        CustomerID = c.Int(nullable: false, identity: true),
+                        Id = c.Int(nullable: false, identity: true),
                         FirstName = c.String(),
                         LastName = c.String(),
                     })
-                .PrimaryKey(t => t.CustomerID);
+                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.ParkingPlaces",
                 c => new
                     {
                         ID = c.String(nullable: false, maxLength: 128),
+                        Vehicle_RegNumber = c.String(maxLength: 128),
                         VehicleType_ID = c.Int(),
                     })
                 .PrimaryKey(t => t.ID)
+                .ForeignKey("dbo.Vehicles", t => t.Vehicle_RegNumber)
                 .ForeignKey("dbo.VehicleTypes", t => t.VehicleType_ID)
+                .Index(t => t.Vehicle_RegNumber)
+                .Index(t => t.VehicleType_ID);
+            
+            CreateTable(
+                "dbo.Vehicles",
+                c => new
+                    {
+                        RegNumber = c.String(nullable: false, maxLength: 128),
+                        CheckInTime = c.DateTime(nullable: false),
+                        Owner_Id = c.Int(),
+                        VehicleType_ID = c.Int(),
+                    })
+                .PrimaryKey(t => t.RegNumber)
+                .ForeignKey("dbo.Owners", t => t.Owner_Id)
+                .ForeignKey("dbo.VehicleTypes", t => t.VehicleType_ID)
+                .Index(t => t.Owner_Id)
                 .Index(t => t.VehicleType_ID);
             
             CreateTable(
@@ -38,29 +56,20 @@ namespace MATJParking.Web.Migrations
                     })
                 .PrimaryKey(t => t.ID);
             
-            CreateTable(
-                "dbo.Vehicles",
-                c => new
-                    {
-                        RegNumber = c.String(nullable: false, maxLength: 128),
-                        CheckInTime = c.DateTime(nullable: false),
-                        CheckOutTime = c.DateTime(nullable: false),
-                        VehicleType_ID = c.Int(),
-                    })
-                .PrimaryKey(t => t.RegNumber)
-                .ForeignKey("dbo.VehicleTypes", t => t.VehicleType_ID)
-                .Index(t => t.VehicleType_ID);
-            
         }
         
         public override void Down()
         {
-            DropForeignKey("dbo.Vehicles", "VehicleType_ID", "dbo.VehicleTypes");
             DropForeignKey("dbo.ParkingPlaces", "VehicleType_ID", "dbo.VehicleTypes");
+            DropForeignKey("dbo.ParkingPlaces", "Vehicle_RegNumber", "dbo.Vehicles");
+            DropForeignKey("dbo.Vehicles", "VehicleType_ID", "dbo.VehicleTypes");
+            DropForeignKey("dbo.Vehicles", "Owner_Id", "dbo.Owners");
             DropIndex("dbo.Vehicles", new[] { "VehicleType_ID" });
+            DropIndex("dbo.Vehicles", new[] { "Owner_Id" });
             DropIndex("dbo.ParkingPlaces", new[] { "VehicleType_ID" });
-            DropTable("dbo.Vehicles");
+            DropIndex("dbo.ParkingPlaces", new[] { "Vehicle_RegNumber" });
             DropTable("dbo.VehicleTypes");
+            DropTable("dbo.Vehicles");
             DropTable("dbo.ParkingPlaces");
             DropTable("dbo.Owners");
         }

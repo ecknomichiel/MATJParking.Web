@@ -16,11 +16,14 @@ namespace MATJParking.Web.Models
                 return Math.Round(ParkingTime * 15.0, 2);
             }
         }
+
         public DateTime CheckInTime { get; set; }
-        public DateTime CheckOutTime { get; set; }
-        [ForeignKey("VehicleType")]
-        public int VehicleTypeID { get { return VehicleType.ID; } }
         public VehicleType VehicleType { get; set; }
+        [ForeignKey("Owner")]
+        public int OwnerID
+        {
+            get { return Owner.Id; }
+        }
         public Owner Owner { get; set; }
 
         [Key]
@@ -34,11 +37,7 @@ namespace MATJParking.Web.Models
         {
             get 
             {
-                DateTime endTime = CheckOutTime;
-                if (CheckOutTime < CheckInTime)
-                {
-                    endTime = DateTime.Now;
-                }
+                DateTime endTime =  DateTime.Now;
                 return endTime.Subtract(CheckInTime).TotalHours ;
             }
         }
@@ -54,7 +53,11 @@ namespace MATJParking.Web.Models
             return String.Format("Registration number: {0}\n Vehicle type: {1}\n Checked in {2}" +
                 "\n Current parking time {4} hours\n Current price: SEK {3}", RegNumber, VehicleType, CheckInTime, Price, Math.Round(ParkingTime, 2));
         }
-
+        [ForeignKey("VehicleType")]
+        public int VehicleTypeId
+        {
+            get { return VehicleType.ID; }
+        }
         public Vehicle()
         {
             VehicleType = new VehicleType();
@@ -69,14 +72,9 @@ namespace MATJParking.Web.Models
             if (source != null)
             {
                 CheckInTime = source.CheckInTime;
-                CheckOutTime = source.CheckOutTime;
                 VehicleType.Assign(source.VehicleType);
+                Owner.Assign(source.Owner);
             }
-            else
-            {
-
-            }
-            
         }
     }
 }
