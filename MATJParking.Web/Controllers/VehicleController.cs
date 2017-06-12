@@ -108,8 +108,13 @@ namespace MATJParking.Web.Controllers
                 case "2":
                     double sv;
                     double.TryParse(searchValue, out sv);
-                    
+             
                     return View(Garage.Instance.SearchAllParkedVehiclesOnPrice(sv, true));
+                case "3":
+                    
+                    return View(Garage.Instance.SearchByRegNum(searchValue));
+                   
+                
             }
             return View(Garage.Instance.SearchAllParkedVehicles());
         }

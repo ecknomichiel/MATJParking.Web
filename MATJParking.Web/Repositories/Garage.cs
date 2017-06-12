@@ -141,6 +141,11 @@ namespace MATJParking.Web.Repositories
         {
             return context.VehicleTypes;
         }
+
+        public IEnumerable<ParkingPlace> SearchByRegNum(string aRegistrationNumber)
+        {
+            return ParkingPlaces.Where(pl => pl.Occupied && pl.VehicleRegNumber.StartsWith(aRegistrationNumber.ToUpper()));
+        }
         #endregion
         #region Constructor
         private Garage()
