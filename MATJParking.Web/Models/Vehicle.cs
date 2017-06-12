@@ -2,33 +2,20 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 
 namespace MATJParking.Web.Models
 {
     public class Vehicle
     {
-        
-        protected double StandardPrice
-        { 
-            get 
-            { 
-                return Math.Round(ParkingTime * 15.0, 2);
-            }
-        }
-
-        public DateTime CheckInTime { get; set; }
-        public VehicleType VehicleType { get; set; }
-        [ForeignKey("Owner")]
-        public int OwnerID
-        {
-            get { return Owner.Id; }
-        }
-        public Owner Owner { get; set; }
-
+        #region Properties
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public string RegNumber { get; set; }
+
+        public DateTime CheckInTime { get; set; }
+        public VehicleType VehicleType { get; set; }
+        public Owner Owner { get; set; }
+      
         public double Price 
         {
             get { return GetPrice(); } 
@@ -41,31 +28,21 @@ namespace MATJParking.Web.Models
                 return endTime.Subtract(CheckInTime).TotalHours ;
             }
         }
+        #endregion
 
-        //methods
-
-        public double GetPrice()
+        #region Private Methods
+        private double GetPrice()
         {
-            return StandardPrice * VehicleType.PricingFactor;
+            return Math.Round(ParkingTime * 15.0, 2) * VehicleType.PricingFactor;
         }
+        #endregion
+        #region Public Methods
+
         public override string ToString()
         {
             return String.Format("Registration number: {0}\n Vehicle type: {1}\n Checked in {2}" +
                 "\n Current parking time {4} hours\n Current price: SEK {3}", RegNumber, VehicleType, CheckInTime, Price, Math.Round(ParkingTime, 2));
         }
-        [ForeignKey("VehicleType")]
-        public int VehicleTypeId
-        {
-            get { return VehicleType.ID; }
-        }
-        public Vehicle()
-        {
-            VehicleType = new VehicleType();
-            Owner = new Owner();
-        }
-
-
-
 
         public void Assign(Vehicle source)
         {
@@ -76,5 +53,13 @@ namespace MATJParking.Web.Models
                 Owner.Assign(source.Owner);
             }
         }
+        
+        public Vehicle()
+        {
+            VehicleType = new VehicleType();
+            Owner = new Owner();
+        }
+        #endregion
+       
     }
 }

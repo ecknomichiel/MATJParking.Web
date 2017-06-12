@@ -127,6 +127,10 @@
     <Compile Include="Migrations\201706051101152_NewInitial.Designer.cs">
       <DependentUpon>201706051101152_NewInitial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201706120839305_Added Owner.PersonNumber.cs" />
+    <Compile Include="Migrations\201706120839305_Added Owner.PersonNumber.Designer.cs">
+      <DependentUpon>201706120839305_Added Owner.PersonNumber.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ModelBinder\CheckinDataModelBinder.cs" />
     <Compile Include="Models\CheckInData.cs" />
@@ -197,6 +201,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201706051101152_NewInitial.resx">
       <DependentUpon>201706051101152_NewInitial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706120839305_Added Owner.PersonNumber.resx">
+      <DependentUpon>201706120839305_Added Owner.PersonNumber.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

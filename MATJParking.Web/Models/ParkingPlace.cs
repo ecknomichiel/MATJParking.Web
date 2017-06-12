@@ -11,23 +11,11 @@ namespace MATJParking.Web.Models
     public class ParkingPlace
     {
         private Vehicle vehicle;
-        public VehicleType VehicleType { get; set; }
-        [ForeignKey("VehicleType")]
-        public int VehicleTypeID 
-        { 
-            get 
-            {
-                if (vehicle != null)
-                    return VehicleType.ID;
-                else
-                    return 0;
-            } 
-        }
+        #region Properties
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public string ID { get; set; }
         public bool Occupied { get {return vehicle != null;} }
-        [ForeignKey("Vehicle")]
         public string VehicleRegNumber 
         { 
             get 
@@ -43,8 +31,9 @@ namespace MATJParking.Web.Models
             get { return vehicle; }
             set { vehicle = value; } //Use only in case of loading from database!!!!
         }
-
-
+        public VehicleType VehicleType { get; set; }
+        #endregion
+        #region Methods
         public void Park(Vehicle aVehicle)
         {
             vehicle = aVehicle;
@@ -62,6 +51,7 @@ namespace MATJParking.Web.Models
             else
                 return String.Format("{0} parking place {1}, empty", VehicleType, ID);
         }
+        #endregion
     }
 
 }
