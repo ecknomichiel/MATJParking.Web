@@ -56,10 +56,10 @@ namespace MATJParking.Web.DataAccess
 
         public IEnumerable<ParkingPlace> GetAllParkingPlaces()
         {
-            return ParkingPlaces;
-              /*  .Include(p => p.Vehicle)
+            return ParkingPlaces
+                .Include(p => p.Vehicle)
                                 .Include(p => p.Vehicle.VehicleType)
-                                .Include(p => p.Vehicle.Owner);*/
+                                .Include(p => p.Vehicle.Owner);
         }
     }
 

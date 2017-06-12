@@ -1,23 +1,24 @@
 ﻿@model MATJParking.Web.Models.CheckInData
 
 @{
-    ViewBag.Title = "CheckIn";
+    ViewBag.Title = "Check in";
 }
 
-<h2>CheckIn</h2>
+<h2>Check in</h2>
 
 <div>
     <h4>ParkingPlace</h4>
     <hr />
+    @using (Html.BeginForm())
+    {
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.State)
     
-        @switch (Model.State)
+        switch (Model.State)
         {
             case MATJParking.Web.Models.CheckInState.SearchDone: //First time the Checkin screen is shown. Vehicle and owner have been searched for, data to be entered
                 {
-                    using (Html.BeginForm())
-                    {
-                        @Html.AntiForgeryToken()
-                        @Html.HiddenFor(model => model.State)
+                    
 
                     <div class="form-horizontal">
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -52,7 +53,7 @@
                             </div>
                         </div>
                     </div>
-                    }
+                   
                     break;
                 }
 
@@ -75,5 +76,6 @@
                 }
                 
         }<!--End switch-->
+    }<!--End form-->
    
 </div>    

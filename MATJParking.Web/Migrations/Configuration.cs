@@ -46,13 +46,17 @@ namespace MATJParking.Web.Migrations
                 new VehicleType() { ID = 3, Name = "Bus", PricingFactor = 4 },
                 new VehicleType() { ID = 4, Name = "Truck", PricingFactor = 3 },
                 new VehicleType() { ID = 2, Name = "Car", PricingFactor = 2 },
-                new VehicleType() { ID = 1, Name = "Motorcycle", PricingFactor = 1 }
+                new VehicleType() { ID = 1, Name = "Motorcycle", PricingFactor = 1 },
+                new VehicleType() { ID = 5, Name = "Horse and cart", PricingFactor = 2.5 },
+                new VehicleType() { ID = 6, Name = "Stridsvagn", PricingFactor = 6 },
+                new VehicleType() { ID = 7, Name = "Helikopter", PricingFactor = 8 } 
             };
 
             foreach (VehicleType vehicleType in result)
             {
                 context.VehicleTypes.AddOrUpdate(vt => vt.ID, vehicleType);
             }
+            context.SaveChanges();
         }
 
         private void SeedParkingPlace(GarageContext context)
@@ -66,21 +70,33 @@ namespace MATJParking.Web.Migrations
             tp = context.GetVehicleTypeByID(4);
             for (i = 0; i < 5; i++)
             {
-                //    parkingPlaces.Add(new ParkingPlace() { ID = "T" + i, VehicleType = VehicleType.Truck });
                 context.ParkingPlaces.AddOrUpdate(pp => pp.ID, new ParkingPlace() { ID = "T" + i, VehicleType = tp });
             }
             tp = context.GetVehicleTypeByID(2);
             for (i = 0; i < 50; i++)
             {
-                //    parkingPlaces.Add(new ParkingPlace() { ID = "C" + i, VehicleType = VehicleType.Car });
                 context.ParkingPlaces.AddOrUpdate(pp => pp.ID, new ParkingPlace() { ID = "C" + i, VehicleType = tp });
 
             }
             tp = context.GetVehicleTypeByID(1);
             for (i = 0; i < 20; i++)
             {
-                //   parkingPlaces.Add(new ParkingPlace() { ID = "M" + i, VehicleType = VehicleType.Motorcycle });
                 context.ParkingPlaces.AddOrUpdate(pp => pp.ID, new ParkingPlace() { ID = "M" + i, VehicleType = tp });
+            }
+            tp = context.GetVehicleTypeByID(5);
+            for (i = 0; i < 2; i++)
+            {
+                context.ParkingPlaces.AddOrUpdate(pp => pp.ID, new ParkingPlace() { ID = "H" + i, VehicleType = tp });
+            }
+            tp = context.GetVehicleTypeByID(6);
+            for (i = 0; i < 2; i++)
+            {
+                context.ParkingPlaces.AddOrUpdate(pp => pp.ID, new ParkingPlace() { ID = "S" + i, VehicleType = tp });
+            }
+            tp = context.GetVehicleTypeByID(7);
+            for (i = 0; i < 8; i++)
+            {
+                context.ParkingPlaces.AddOrUpdate(pp => pp.ID, new ParkingPlace() { ID = "K" + i, VehicleType = tp });
             }
         }
     }

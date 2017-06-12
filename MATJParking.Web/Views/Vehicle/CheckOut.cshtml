@@ -1,10 +1,10 @@
 ﻿@model MATJParking.Web.Models.ParkingPlace
 
 @{
-    ViewBag.Title = "CheckOut";
+    ViewBag.Title = "Check out";
 }
 
-<h2>CheckOut</h2>
+<h2>Check out</h2>
 
 <h3></h3>
 
@@ -13,7 +13,7 @@
 <form action="post">
 @Html.HiddenFor(pl => pl.VehicleRegNumber)
     <div class="CheckOutButtons">
-        <button type="submit" class="btn btn-success" formaction="~/Vehicle/Yes">Yes</button>
+        <button type="submit" class="btn btn-success" formaction="~/Vehicle/CheckOutYes">Yes</button>
         <button type="submit" class="btn btn-primary" formaction="~/Vehicle/Index">No</button>
     </div>
 </form>

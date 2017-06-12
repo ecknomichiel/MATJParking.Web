@@ -12,6 +12,25 @@ namespace MATJParking.Web.Models
         public string LastName { get; set; }
         public string PersonNumber { get; set; }
         public virtual ICollection<Vehicle> Vehicles { get; set; }
+        public string FullName 
+        { 
+            get 
+            {
+                string result = FirstName.Trim();
+                if (!String.IsNullOrWhiteSpace(result))
+                {
+                    if (!String.IsNullOrWhiteSpace(LastName))
+                    {
+                        result += " " + LastName;
+                    }
+                    else
+                    {
+                        result = LastName;
+                    }
+                }
+                return result;
+            } 
+        }
 
         public void Assign(Owner source)
         {
@@ -22,6 +41,18 @@ namespace MATJParking.Web.Models
                 LastName = source.LastName;
                 PersonNumber = source.PersonNumber;
                 Vehicles = source.Vehicles;
+            }
+        }
+
+
+
+        internal void AssignUpdateabeData(Owner source)
+        {
+            if (source != null)
+            {
+                FirstName = source.FirstName;
+                LastName = source.LastName;
+                PersonNumber = source.PersonNumber;
             }
         }
     }

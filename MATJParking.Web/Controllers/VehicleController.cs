@@ -24,10 +24,6 @@ namespace MATJParking.Web.Controllers
         public ActionResult CheckIn([ModelBinder(typeof(CheckinDataModelBinder))] CheckInData checkInData)
         {
 
-            if (checkInData.RegistrationNumber == "")
-            {
-                checkInData.RegistrationNumber = ViewData["registrationNumber"] as string;
-            }
             switch (checkInData.State)
             {
                 case CheckInState.Initial:
@@ -57,10 +53,13 @@ namespace MATJParking.Web.Controllers
                             if (e.GetType() == typeof(ENoPlaceForVehicle))
                             {
                                 checkInData.State = CheckInState.NoPlaceForVehicle;
+                                //Load miniml data for displying error page: Vehicle type
+                                checkInData.Vehicle.VehicleType = Garage.Instance.GetVehicleType(checkInData.VehicleTypeId);
                             }
                             if (e.GetType() == typeof(EVehicleAlreadyCheckedIn))
                             {
                                 checkInData.State = CheckInState.AlreadyParked;
+                                //Load data for displying error page: Parking place
                                 checkInData.Place = Garage.Instance.SearchPlaceWhereVehicleIsParked(checkInData.Vehicle.RegNumber);
                             }
                         }
@@ -79,13 +78,13 @@ namespace MATJParking.Web.Controllers
 
             return View(pl);
         }
-        public ActionResult Yes(string VehicleRegNumber)
+        public ActionResult CheckOutYes(string VehicleRegNumber)
         {
             Garage.Instance.CheckOut(VehicleRegNumber);
 
             return RedirectToAction("Index");
         }			
-        public ActionResult SearchCar(string registrationNumber)
+        public ActionResult CarDetails(string registrationNumber)
         {
             ParkingPlace pl = Garage.Instance.SearchPlaceWhereVehicleIsParked(registrationNumber);
             if (pl == null)

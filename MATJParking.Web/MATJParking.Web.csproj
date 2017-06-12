@@ -182,7 +182,7 @@
     <Content Include="Views\Vehicle\CheckIn.cshtml" />
     <Content Include="Views\Vehicle\_VehicleType.cshtml" />
     <Content Include="Views\Vehicle\_ParkedVehicle.cshtml" />
-    <Content Include="Views\Vehicle\SearchCar.cshtml" />
+    <Content Include="Views\Vehicle\CarDetails.cshtml" />
     <Content Include="Views\Vehicle\CheckOut.cshtml" />
     <Content Include="Views\Vehicle\Search.cshtml" />
     <Content Include="Views\Vehicle\_OwnerEdit.cshtml" />

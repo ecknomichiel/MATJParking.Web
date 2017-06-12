@@ -58,9 +58,10 @@ namespace MATJParking.Web.Repositories
             {
                 VehicleType vt = GetVehicleType(data.VehicleTypeId);
                 vehicle = CreateVehicle(vt);
-                vehicle.Owner = data.Owner;
                 vehicle.RegNumber = uRegNr;
-            }     
+            }
+            vehicle.Owner.AssignUpdateabeData(data.Owner);
+            
             
            // try
             { //If there is no available space for this type of car, an exception is raised (sequence contains no elements)
