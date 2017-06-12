@@ -14,14 +14,12 @@
                         @*<button type="button" class=" btn btn-default dropdown-toggle" data-toggle="dropdown">
                             <span id="search_concept">Filter by</span> <span class="caret"></span>
                         </button>*@
+                       
+                            <select class=" form-control  " id="dropDown" name="dropDown">
+                                <option value="1">Parked Vehicles</option>
+                                <option value="2">Price greater than</option>
+                            </select>
                         
-                        <select  class=" form-control  " id="dropDown" name="dropDown" >
-                            
-                            <option value="1">Parked Vehicles</option>
-                            <option value="2">Price greater than</option>
-
-                        </select>
-
                     </div>
                     <input type="hidden" name="search_param" value="all" id="search_param">
                     <input type="text" class="form-control" name="searchValue" placeholder="Search vehicle...">
