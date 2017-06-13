@@ -137,6 +137,7 @@
     <Compile Include="Models\OverviewLine.cs" />
     <Compile Include="Models\Owner.cs" />
     <Compile Include="Models\ParkingPlace.cs" />
+    <Compile Include="Models\SearchData.cs" />
     <Compile Include="Models\Vehicle.cs" />
     <Compile Include="Models\VehicleType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
