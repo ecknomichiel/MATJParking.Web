@@ -146,6 +146,7 @@ namespace MATJParking.Web.Controllers
                     data.SearchResult = Garage.Instance.SearchAllParkingPlaces();
                     break;
             }
+            data.Sort();
             return View(data);
         }
     }

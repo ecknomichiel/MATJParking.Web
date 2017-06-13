@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using MATJParking.Web.Repositories;
 
 namespace MATJParking.Web.Models
@@ -8,6 +9,20 @@ namespace MATJParking.Web.Models
     {
         public string DropDown { get; set; }
         public string SearchValue { get; set; }
+        public string SortOrder { get; set; }
+        public string GetNextSortOrder(string fieldName)
+        {
+            string order = "asc";
+            if (SortOrder.Contains(fieldName))
+            {
+                //Flip ascending - desc
+                if (SortOrder.Contains(order))
+                {
+                    order = "desc";
+                }
+            }
+            return fieldName + "_" + order;
+        }
         public double SearchValDouble 
         { 
             get 
@@ -74,8 +89,46 @@ namespace MATJParking.Web.Models
         {
             DropDown = "1"; //Default: all parked vehicles
             SearchValue = "";
+            SortOrder = "place_asc";
             SearchResult = new ParkingPlace[0]; 
         }
 
+
+        public void Sort()
+        {
+            switch (SortOrder)
+            {
+                case "place_asc":
+                    SearchResult = SearchResult.OrderBy(pl => pl.ID);
+                    break;
+                case "place_desc":
+                    SearchResult = SearchResult.OrderByDescending(pl => pl.ID);
+                    break;
+                case "regnr_asc":
+                    SearchResult = SearchResult.OrderBy(pl => pl.VehicleRegNumber);
+                    break;
+                case "regnr_desc":
+                    SearchResult = SearchResult.OrderByDescending(pl => pl.VehicleRegNumber);
+                    break;
+                case "type_asc":
+                    SearchResult = SearchResult.OrderBy(pl => pl.VehicleType.Name);
+                    break;
+                case "type_desc":
+                    SearchResult = SearchResult.OrderByDescending(pl => pl.VehicleType.Name);
+                    break;
+                case "time_asc":
+                    SearchResult = SearchResult.OrderBy(pl => pl.ParkingTime);
+                    break;
+                case "time_desc":
+                    SearchResult = SearchResult.OrderByDescending(pl => pl.ParkingTime);
+                    break;
+                case "price_asc":
+                    SearchResult = SearchResult.OrderBy(pl => pl.Price);
+                    break;
+                case "price_desc":
+                    SearchResult = SearchResult.OrderByDescending(pl => pl.Price);
+                    break;
+            }
+        }
     }
 }

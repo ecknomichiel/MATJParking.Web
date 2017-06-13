@@ -139,7 +139,7 @@ namespace MATJParking.Web.Repositories
         }
         public IEnumerable<VehicleType> GetVehicleTypes()
         {
-            return context.VehicleTypes;
+            return context.GetVehicleTypes();
         }
 
         public IEnumerable<ParkingPlace> SearchByRegNum(string aRegistrationNumber)

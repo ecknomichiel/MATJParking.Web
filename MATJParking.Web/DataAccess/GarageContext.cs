@@ -9,6 +9,7 @@ namespace MATJParking.Web.DataAccess
 {
     public class GarageContext: DbContext
     {
+        private List<VehicleType> vehicleTypes = new List<VehicleType>();
         public DbSet<VehicleType> VehicleTypes { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<ParkingPlace> ParkingPlaces { get; set; }
@@ -20,7 +21,10 @@ namespace MATJParking.Web.DataAccess
                             .Include(v => v.VehicleType)
                             .SingleOrDefault(v => v.RegNumber.ToUpper() == RegNumber.ToUpper());
         }
-        public GarageContext() : base("DefaultConnection") { }
+        public GarageContext() : base("DefaultConnection") 
+        {
+            vehicleTypes.AddRange(VehicleTypes);
+        }
 
 
         public void AddVehicle(Vehicle vehicle)
@@ -44,7 +48,7 @@ namespace MATJParking.Web.DataAccess
 
         public VehicleType GetVehicleTypeByID(int vehicleTypeId)
         {
-            return VehicleTypes.Single(vt => vt.ID == vehicleTypeId);
+            return vehicleTypes.Single(vt => vt.ID == vehicleTypeId);
         }
 
         public void UpdateVehicle(Vehicle vehicle)
@@ -60,6 +64,11 @@ namespace MATJParking.Web.DataAccess
                 .Include(p => p.Vehicle)
                                 .Include(p => p.Vehicle.VehicleType)
                                 .Include(p => p.Vehicle.Owner);
+        }
+
+        public IEnumerable<VehicleType> GetVehicleTypes()
+        {
+            return vehicleTypes;
         }
     }
 

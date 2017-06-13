@@ -27,3 +27,9 @@ textarea {
 .btn {
     width:8em;
 }
+@media (max-width: 768px)
+{
+    select {
+        min-width:15em;
+    }
+}

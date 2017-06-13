@@ -52,6 +52,36 @@ namespace MATJParking.Web.Models
                 return String.Format("{0} parking place {1}, empty", VehicleType, ID);
         }
         #endregion
+
+        public double ParkingTime 
+        { 
+            get
+            {
+                if (Occupied)
+                {
+                    return Vehicle.ParkingTime;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+        }
+
+        public double Price 
+        { 
+            get
+            {
+                if (Occupied)
+                {
+                    return Vehicle.Price;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+        }
     }
 
 }

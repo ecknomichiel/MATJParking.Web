@@ -20,7 +20,7 @@
                                         }>Price greater than</option>
                                 <option value="3" @if (Model.DropDown == "3") {@:selected 
                                         }>Registration number</option>
-                                <option value="5" @if (Model.DropDown == "3") { @: selected
+                                <option value="5" @if (Model.DropDown == "5") { @: selected
                                                                                 }>
                                     All parking places
                                 </option>
@@ -57,11 +57,11 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>Place</th>
-                        <th>Registration number</th>
-                        <th>Vehicle type</th>
-                        <th class="text-right">Parking time (hour)</th>
-                        <th class="text-right">Price</th>
+                        <th>@Html.ActionLink("Place", "Search", new { sortOrder = Model.GetNextSortOrder("place") })</th>
+                        <th>@Html.ActionLink("Registration number", "Search", new { sortOrder = Model.GetNextSortOrder("regnr") })</th>
+                        <th>@Html.ActionLink("Vehicle type", "Search", new { sortOrder = Model.GetNextSortOrder("type") })</th>
+                        <th class="text-right">@Html.ActionLink("Parking time (hour)", "Search", new { sortOrder = Model.GetNextSortOrder("time") })</th>
+                        <th class="text-right">@Html.ActionLink("Price", "Search", new { sortOrder = Model.GetNextSortOrder("price") })</th>
                     </tr>
                 </thead>
 
