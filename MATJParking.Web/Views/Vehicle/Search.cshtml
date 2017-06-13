@@ -1,5 +1,5 @@
 ﻿@using MATJParking.Web.Models;
-@model  IEnumerable< MATJParking.Web.Models.ParkingPlace>
+@model  SearchData
 @{
     ViewBag.Title = "Search";
 }
@@ -13,26 +13,33 @@
                 <div class="input-group">
                     <div class="input-group-btn search-panel">
                        
-                            <select class="form-control " id="dropDown" name="dropDown">
-                                <option value="1">Parked Vehicles</option>
-                                <option value="2">Price greater than</option>
-                                <option value="3">registration number</option>
+                            <select class="form-control " id="dropDown" name="dropDown" value="@Model.DropDown">
+                                <option value="1" @if (Model.DropDown == "1") {@:selected 
+                                        })>Parked Vehicles</option>
+                                <option value="2" @if (Model.DropDown == "2") {@:selected 
+                                        }>Price greater than</option>
+                                <option value="3" @if (Model.DropDown == "3") {@:selected 
+                                        }>registration number</option>
                                 <optgroup label="vehicle type">
                                     @foreach (VehicleType item in ViewBag.VehicleTypes)
                                     {
-                                        <option value="@item.ID">@item.Name</option>
+                                        <option value="4.@item.ID" @if (Model.VehicleTypeId == item.ID) {@:selected
+                                                }>@item.Name</option>
                                     }
                                 </optgroup>
                             </select>
                         
                     </div>
                     <input type="hidden" name="search_param" value="all" id="search_param">
-                    <input type="text" class="form-control" name="searchValue" placeholder="Search vehicle...">
+                    <input type="text" class="form-control" name="searchValue" placeholder="Search vehicle..." value="@Model.SearchValue">
                     <span class="input-group-btn">
                         <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search "> </span></button>
                     </span>
                 </div>
             </div>
+        </div>
+        <div class="row">
+            @Model.SearchPath
         </div>
     </div>
 </form>
@@ -54,12 +61,12 @@
                     </tr>
                 </thead>
 
-                           @foreach (MATJParking.Web.Models.ParkingPlace place in Model)
+                           @foreach (MATJParking.Web.Models.ParkingPlace place in Model.SearchResult)
             {
                 <tbody>
                     <tr>
                         <td>@place.ID</td>
-                        <td>@place.VehicleRegNumber</td>
+                        <td><a href="~/Vehicle/CarDetails/@place.VehicleRegNumber">@place.VehicleRegNumber</a> </td>
                         <td>@place.Vehicle.VehicleType.Name</td>
                         <td>@place.Vehicle.ParkingTime</td>
                         <td>@place.Vehicle.Price</td>
