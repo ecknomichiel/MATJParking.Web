@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace MATJParking.Web.Models
 {
     public class CheckInData
     { //This is a helper class for storing state and should not be stored in the database
+        [Required]
         public string RegistrationNumber { get; set; }
         public int VehicleTypeId { get; set; }
         public Vehicle Vehicle { get; set; }

@@ -115,7 +115,6 @@ namespace MATJParking.Web.Controllers
                     
                     return View(Garage.Instance.SearchByRegNum(searchValue));
                    
-                
             }
             return View(Garage.Instance.SearchAllParkedVehicles());
         }
