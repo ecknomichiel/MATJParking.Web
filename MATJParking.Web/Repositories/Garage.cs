@@ -146,6 +146,9 @@ namespace MATJParking.Web.Repositories
         {
             return ParkingPlaces.Where(pl => pl.Occupied && pl.VehicleRegNumber.StartsWith(aRegistrationNumber.ToUpper()));
         }
+
+        
+        
         #endregion
         #region Constructor
         private Garage()
