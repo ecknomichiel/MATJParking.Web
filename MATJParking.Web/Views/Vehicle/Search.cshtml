@@ -57,11 +57,11 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>@Html.ActionLink("Place", "Search", new { sortOrder = Model.GetNextSortOrder("place") })</th>
-                        <th>@Html.ActionLink("Registration number", "Search", new { sortOrder = Model.GetNextSortOrder("regnr") })</th>
-                        <th>@Html.ActionLink("Vehicle type", "Search", new { sortOrder = Model.GetNextSortOrder("type") })</th>
-                        <th class="text-right">@Html.ActionLink("Parking time (hour)", "Search", new { sortOrder = Model.GetNextSortOrder("time") })</th>
-                        <th class="text-right">@Html.ActionLink("Price", "Search", new { sortOrder = Model.GetNextSortOrder("price") })</th>
+                        <th>@Html.ActionLink("Place", "Search", new { sortOrder = Model.GetNextSortOrder("place"), dropDown = Model.DropDown, searchValue = Model.SearchValue })</th>
+                        <th>@Html.ActionLink("Registration number", "Search", new { sortOrder = Model.GetNextSortOrder("regnr"), dropDown = Model.DropDown, searchValue = Model.SearchValue })</th>
+                        <th>@Html.ActionLink("Vehicle type", "Search", new { sortOrder = Model.GetNextSortOrder("type"), dropDown = Model.DropDown, searchValue = Model.SearchValue })</th>
+                        <th class="text-right">@Html.ActionLink("Parking time (hour)", "Search", new { sortOrder = Model.GetNextSortOrder("time"), dropDown = Model.DropDown, searchValue = Model.SearchValue })</th>
+                        <th class="text-right">@Html.ActionLink("Price", "Search", new { sortOrder = Model.GetNextSortOrder("price"), dropDown = Model.DropDown, searchValue = Model.SearchValue })</th>
                     </tr>
                 </thead>
 
