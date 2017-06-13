@@ -21,10 +21,10 @@
            @foreach (var item in Model)
            {
             <tr>
-                <td >
+                <td class="col-md-2">
                     @Html.DisplayFor(model => item.VehicleType.Name)
                 </td>
-                <td >
+                <td class="col-md-2 ">
                     @Html.DisplayFor(modelItem => item.NumAvailablePlaces)
                 </td>
             </tr>
