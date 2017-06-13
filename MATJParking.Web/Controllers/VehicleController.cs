@@ -16,8 +16,9 @@ namespace MATJParking.Web.Controllers
         public VehicleController() {}
     
         // GET: Vehicle
-        public ActionResult Index()
+        public ActionResult Index(string id="")
         {
+            ViewBag.Message = id;
             return View(Garage.Instance.GetVehicleTypes());
         }
         [HttpPost]
@@ -74,14 +75,30 @@ namespace MATJParking.Web.Controllers
         // CheckOut                               
         public ActionResult CheckOut(string RegistrationNumber)
         {
+            if (RegistrationNumber == null)
+                return RedirectToAction("Index");
             ParkingPlace pl = Garage.Instance.SearchPlaceWhereVehicleIsParked(RegistrationNumber);
-
+            if (pl == null)
+            {
+                string msg = "Cannot find car with registrationnumber " + RegistrationNumber;
+                return RedirectToAction("Index", new {id = msg});
+            }
             return View(pl);
         }
+
+
         public ActionResult CheckOutYes(string VehicleRegNumber)
         {
-            Garage.Instance.CheckOut(VehicleRegNumber);
-
+            try
+            {
+                Garage.Instance.CheckOut(VehicleRegNumber);
+            }
+            catch (Exception e)
+            {
+                ViewBag.Message = e.Message;
+                return View();
+            }
+            //If everything went OK, go back to the index page
             return RedirectToAction("Index");
         }			
         public ActionResult CarDetails(string registrationNumber, string Id)
@@ -131,6 +148,9 @@ namespace MATJParking.Web.Controllers
                     break;
                 case '4':
                     data.SearchResult = Garage.Instance.SearchAllParkedVehiclesOnVehicleType(data.VehicleTypeId);
+                    break;
+                case '5':
+                    data.SearchResult = Garage.Instance.SearchAllParkingPlaces();
                     break;
             }
             return View(data);

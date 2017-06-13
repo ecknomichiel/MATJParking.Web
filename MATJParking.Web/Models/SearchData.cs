@@ -52,6 +52,9 @@ namespace MATJParking.Web.Models
                     case "3":
                         result = "Registration number/" + SearchValue.ToUpper() + "*";
                         break;
+                    case "5":
+                        result = "All parking places";
+                        break;
                 }
                 return result;
             }

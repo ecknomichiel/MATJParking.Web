@@ -19,7 +19,11 @@
                                 <option value="2" @if (Model.DropDown == "2") {@:selected 
                                         }>Price greater than</option>
                                 <option value="3" @if (Model.DropDown == "3") {@:selected 
-                                        }>registration number</option>
+                                        }>Registration number</option>
+                                <option value="5" @if (Model.DropDown == "3") { @: selected
+                                                                                }>
+                                    All parking places
+                                </option>
                                 <optgroup label="vehicle type">
                                     @foreach (VehicleType item in ViewBag.VehicleTypes)
                                     {
@@ -53,11 +57,11 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>registration number</th>
-                        <th>Vehicle Type</th>
-                        <th>ParkingTime</th>
-                        <th>Price</th>
+                        <th>Place</th>
+                        <th>Registration number</th>
+                        <th>Vehicle type</th>
+                        <th class="text-right">Parking time (hour)</th>
+                        <th class="text-right">Price</th>
                     </tr>
                 </thead>
 
@@ -66,10 +70,21 @@
                 <tbody>
                     <tr>
                         <td>@place.ID</td>
-                        <td><a href="~/Vehicle/CarDetails/@place.VehicleRegNumber">@place.VehicleRegNumber</a> </td>
-                        <td>@place.Vehicle.VehicleType.Name</td>
-                        <td>@place.Vehicle.ParkingTime</td>
-                        <td>@place.Vehicle.Price</td>
+                        @if (place.Occupied)
+                        {
+                            <td><a href="~/Vehicle/CarDetails/@place.VehicleRegNumber">@place.VehicleRegNumber</a> </td>
+                            <td>@place.Vehicle.VehicleType.Name</td>
+                            <td class="text-right">@Math.Round(place.Vehicle.ParkingTime, 2)</td>
+                            <td class="text-right">@place.Vehicle.Price SEK</td>
+                        }
+                        else
+                        {
+                            <td>- empty - </td>
+                            <td>@place.VehicleType.Name</td>
+                            <td class="text-right">-</td>
+                            <td class="text-right">-</td>
+                        }
+                        
                     </tr>
 
                 </tbody>

@@ -84,8 +84,7 @@ namespace MATJParking.Web.Repositories
                                             .Where(pl => !pl.Occupied);
         }
 
-
-
+        //CheckOut
         public void CheckOut(string RegistrationNumber)
         {
             ParkingPlace place = SearchPlaceWhereVehicleIsParked(RegistrationNumber);
