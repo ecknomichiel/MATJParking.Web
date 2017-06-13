@@ -75,6 +75,8 @@ namespace MATJParking.Web.Controllers
         // CheckOut                               
         public ActionResult CheckOut(string RegistrationNumber)
         {
+            if (RegistrationNumber == null)
+                return RedirectToAction("Index");
             ParkingPlace pl = Garage.Instance.SearchPlaceWhereVehicleIsParked(RegistrationNumber);
             if (pl == null)
             {
@@ -87,13 +89,30 @@ namespace MATJParking.Web.Controllers
 
         public ActionResult CheckOutYes(string VehicleRegNumber)
         {
-            Garage.Instance.CheckOut(VehicleRegNumber);
-
+            try
+            {
+                Garage.Instance.CheckOut(VehicleRegNumber);
+            }
+            catch (Exception e)
+            {
+                ViewBag.Message = e.Message;
+                return View();
+            }
+            //If everything went OK, go back to the index page
             return RedirectToAction("Index");
         }			
-        public ActionResult CarDetails(string registrationNumber)
+        public ActionResult CarDetails(string registrationNumber, string Id)
         {
-            ParkingPlace pl = Garage.Instance.SearchPlaceWhereVehicleIsParked(registrationNumber);
+            ParkingPlace pl = null;
+            if (registrationNumber == null)
+            {
+                registrationNumber = Id;
+            }
+            if (registrationNumber != null)
+            {
+                pl = Garage.Instance.SearchPlaceWhereVehicleIsParked(registrationNumber);
+            }
+
             if (pl == null)
             {
                 ViewBag.Message = "Cannot find car with registrationnumber " + registrationNumber;
@@ -106,24 +125,35 @@ namespace MATJParking.Web.Controllers
             return View(Garage.Instance.GetOverview());
         }
 
-        public ActionResult Search(string dropDown, string searchValue)
+        public ActionResult Search(SearchData data)
         {
-            switch (dropDown)
+            ViewBag.VehicleTypes = Garage.Instance.GetVehicleTypes();
+            if (data == null)
             {
-                case "1":
-                    return View(Garage.Instance.SearchAllParkedVehicles());
-                case "2":
-                    double sv;
-                    double.TryParse(searchValue, out sv);
-             
-                    return View(Garage.Instance.SearchAllParkedVehiclesOnPrice(sv, true));
-                case "3":
-                    
-                    return View(Garage.Instance.SearchByRegNum(searchValue));
-                   
-                
+                data = new SearchData();
             }
-            return View(Garage.Instance.SearchAllParkedVehicles());
+           
+            switch (data.MenuOption)
+            {
+                case '1':
+                    data.SearchResult = Garage.Instance.SearchAllParkedVehicles();
+                    break;
+                case '2':
+                    double sv;
+                    double.TryParse(data.SearchValue, out sv);
+                    data.SearchResult = Garage.Instance.SearchAllParkedVehiclesOnPrice(sv, true);
+                    break;
+                case '3':                    
+                    data.SearchResult = Garage.Instance.SearchByRegNum(data.SearchValue);
+                    break;
+                case '4':
+                    data.SearchResult = Garage.Instance.SearchAllParkedVehiclesOnVehicleType(data.VehicleTypeId);
+                    break;
+                case '5':
+                    data.SearchResult = Garage.Instance.SearchAllParkingPlaces();
+                    break;
+            }
+            return View(data);
         }
     }
 }

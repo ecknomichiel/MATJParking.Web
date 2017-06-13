@@ -17,10 +17,11 @@
             @using (Html.BeginForm())
 {
                 @Html.AntiForgeryToken()
+                @Html.ValidationSummary()
           <div class="main">      
             <div class="form-group">
-                <label for="usr">Registration number :</label>
-                <input type="text" class="form-control" id="number" name="registrationNumber">
+                <label for="user">Registration number :</label>
+                <input type="text" class="form-control" id="number" name="registrationNumber" placeholder = "Add a number", required="required">
             </div>
         </div>
         <div class="pageButtons">
