@@ -17,7 +17,11 @@ namespace MATJParking.Web.ModelBinder
             {
                 HttpRequestBase request = controllerContext.HttpContext.Request;
                 int vehicleTypeId;
-                int.TryParse(request.Form.Get("vehicleTypeId"), out vehicleTypeId);
+                int.TryParse(request.Form.Get("VehicleTypeId"), out vehicleTypeId);
+                if (vehicleTypeId == 0)
+                {
+                    int.TryParse(request.Form.Get("Vehicle.VehicleType.Id"), out vehicleTypeId);
+                }
                 CheckInState st;
                 Enum.TryParse<CheckInState>(request.Form.Get("State"), out st);               
 
@@ -39,6 +43,7 @@ namespace MATJParking.Web.ModelBinder
                 owner.Id = customerId;
                 owner.FirstName = request.Form.Get("FirstName");
                 owner.LastName = request.Form.Get("LastName");
+                owner.PersonNumber = request.Form.Get("Personnumber");
 
                 result.Owner = owner;
                 vehicle.Owner = owner;
