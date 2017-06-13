@@ -1,6 +1,7 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
+    
 }
 
 
@@ -27,3 +28,21 @@ textarea {
 .btn {
     width:8em;
 }
+
+.vehicle-type {
+    padding-left: 0%;
+    margin-bottom:20px;
+}
+
+.vehicle-type-lable {
+    
+}
+
+@media (max-width: 768px) {
+    .vehicle-type {
+        padding-left:0;
+    }
+}
+
+
+
