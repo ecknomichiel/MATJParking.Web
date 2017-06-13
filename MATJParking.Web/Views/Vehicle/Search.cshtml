@@ -1,4 +1,5 @@
-﻿@model  IEnumerable< MATJParking.Web.Models.ParkingPlace>
+﻿@using MATJParking.Web.Models;
+@model  IEnumerable< MATJParking.Web.Models.ParkingPlace>
 @{
     ViewBag.Title = "Search";
 }
@@ -13,15 +14,14 @@
                     <div class="input-group-btn search-panel">
                        
                             <select class="form-control " id="dropDown" name="dropDown">
-                               
-                                    <option value="1">Parked Vehicles</option>
-                                    <option value="2">Price greater than</option>
-                                    <option value="3">registration number</option>
+                                <option value="1">Parked Vehicles</option>
+                                <option value="2">Price greater than</option>
+                                <option value="3">registration number</option>
                                 <optgroup label="vehicle type">
-                                    <option >Motorcycle</option>
-                                    <option>Car</option>
-                                    <option>Bus</option>
-                                    <option>Truck</option>
+                                    @foreach (VehicleType item in ViewBag.VehicleTypes)
+                                    {
+                                        <option value="@item.ID">@item.Name</option>
+                                    }
                                 </optgroup>
                             </select>
                         

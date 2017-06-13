@@ -101,6 +101,7 @@ namespace MATJParking.Web.Controllers
 
         public ActionResult Search(string dropDown, string searchValue)
         {
+            ViewBag.VehicleTypes = Garage.Instance.GetVehicleTypes();
             switch (dropDown)
             {
                 case "1":
