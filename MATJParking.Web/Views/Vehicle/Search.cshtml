@@ -1,11 +1,15 @@
 ﻿@using MATJParking.Web.Models;
+@using Newtonsoft.Json;
 @model  SearchData
 @{
     ViewBag.Title = "Search";
 }
 
 <h2>Search</h2>
-<form ng-app="matjModule" ng-controller="searchController" ng-init="setSearchData(@Model.DropDown, @Model.SearchValue, @Model.VehicleTypeId, @Newtonsoft.Json.JsonConvert.SerializeObject(Model.SearchResult))">
+<form ng-app="matjModule" ng-controller="searchController" ng-init="setSearchData(@Model.DropDown, @Model.SearchValue, @Model.VehicleTypeId, @JsonConvert.SerializeObject(Model.SearchResult, new JsonSerializerSettings
+                                                                                                                                        {
+                                                                                                                                            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                                                                                                                                        }))">
     <p class="lead"></p>
     <div class="container">
         <div class="row">
