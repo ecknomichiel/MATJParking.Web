@@ -20,6 +20,14 @@
             });
         };
 
+        $scope.setSearchData = function (dropDown, searchValue, vehicleTypeId, parkingPlaces) {
+            $scope.dropDown = dropDown;
+            $scope.searchValue = searchValue;
+            $scope.vehicleTypeId = vehicleTypeId;
+            $scope.data = parkingPlaces;
+
+        };
+
         $scope.getData = getData;
 
         //initialise default values

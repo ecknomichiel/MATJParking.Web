@@ -5,7 +5,7 @@
 }
 
 <h2>Search</h2>
-<form ng-app="matjModule">
+<form ng-app="matjModule" ng-controller="searchController" ng-init="setSearchData(@Model.DropDown, @Model.SearchValue, @Model.VehicleTypeId, @Newtonsoft.Json.JsonConvert.SerializeObject(Model.SearchResult))">
     <p class="lead"></p>
     <div class="container">
         <div class="row">
@@ -75,31 +75,16 @@
                         <th class="text-right">@Html.ActionLink("Price", "Search", new { sortOrder = Model.GetNextSortOrder("price"), dropDown = Model.DropDown, searchValue = Model.SearchValue })</th>
                     </tr>
                 </thead>
-
-                           @foreach (MATJParking.Web.Models.ParkingPlace place in Model.SearchResult)
-            {
+                <!-- Write out resuts -->
                 <tbody>
-                    <tr>
-                        <td>@place.ID</td>
-                        @if (place.Occupied)
-                        {
-                            <td><a href="~/Vehicle/CarDetails/@place.VehicleRegNumber">@place.VehicleRegNumber</a> </td>
-                            <td>@place.Vehicle.VehicleType.Name</td>
-                            <td class="text-right">@Math.Round(place.Vehicle.ParkingTime, 2)</td>
-                            <td class="text-right">@place.Vehicle.Price SEK</td>
-                        }
-                        else
-                        {
-                            <td>- empty - </td>
-                            <td>@place.VehicleType.Name</td>
-                            <td class="text-right">-</td>
-                            <td class="text-right">-</td>
-                        }
-                        
-                    </tr>
-
+                        <tr ng-repeat="place in data">
+                            <td>{{place.id}}</td>
+                            <td><a href="~/Vehicle/CarDetails/{{place.VehicleRegNumber}}">{{place.VehicleRegNumber}}</a> </td>
+                            <td>{{place.Vehicle.VehicleType.Name}}</td>
+                            <td class="text-right">{{place.Vehicle.ParkingTime}}</td>
+                            <td class="text-right">{{place.Vehicle.Price}} SEK</td>
+                        </tr>
                 </tbody>
-                }
             </table>
         </div>
 
