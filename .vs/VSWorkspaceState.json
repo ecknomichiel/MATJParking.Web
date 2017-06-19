@@ -2,13 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\MATJParking.Web",
-    "\\MATJParking.Web\\App_Start",
-    "\\MATJParking.Web\\Content",
-    "\\MATJParking.Web\\Controllers",
-    "\\MATJParking.Web\\Models",
-    "\\MATJParking.Web\\Repositories",
+    "\\MATJParking.Web\\Views\\Shared",
     "\\MATJParking.Web\\Views\\Vehicle"
   ],
-  "SelectedNode": "\\MATJParking.Web\\Controllers\\VehicleController.cs",
+  "SelectedNode": "\\MATJParking.Web\\Controllers",
   "PreviewInSolutionExplorer": false
 }
