@@ -5,34 +5,42 @@
 }
 
 <h2>Search</h2>
-<form>
+<form ng-app="matjModule" ng-controller="searchController" ng-init="setSearchData(@Model.DropDown, @Model.SearchValue, @Model.VehicleTypeId, @Newtonsoft.Json.JsonConvert.SerializeObject(Model.SearchResult))">
     <p class="lead"></p>
     <div class="container">
         <div class="row">
             <div class="col-xs-8 col-xs-offset-2">
                 <div class="input-group">
                     <div class="input-group-btn search-panel">
-                       
-                            <select class="form-control " id="dropDown" name="dropDown" value="@Model.DropDown">
-                                <option value="1" @if (Model.DropDown == "1") {@:selected 
-                                        })>Parked Vehicles</option>
-                                <option value="2" @if (Model.DropDown == "2") {@:selected 
-                                        }>Price greater than</option>
-                                <option value="3" @if (Model.DropDown == "3") {@:selected 
-                                        }>Registration number</option>
-                                <option value="5" @if (Model.DropDown == "5") { @: selected
-                                                                                }>
-                                    All parking places
-                                </option>
-                                <optgroup label="vehicle type">
-                                    @foreach (VehicleType item in ViewBag.VehicleTypes)
-                                    {
-                                        <option value="4.@item.ID" @if (Model.VehicleTypeId == item.ID) {@:selected
-                                                }>@item.Name</option>
-                                    }
-                                </optgroup>
-                            </select>
-                        
+
+                        <select class="form-control " id="dropDown" name="dropDown">
+                            <option value="1" @if (Model.DropDown == "1") { @: selected
+                                                                            } )>
+                                Parked Vehicles
+                            </option>
+                            <option value="2" @if (Model.DropDown == "2") { @: selected
+                                                                            }>
+                                Price greater than
+                            </option>
+                            <option value="3" @if (Model.DropDown == "3") { @: selected
+                                                                            }>
+                                Registration number
+                            </option>
+                            <option value="5" @if (Model.DropDown == "5") { @: selected
+                                                                                                                    }>
+                                All parking places
+                            </option>
+                            <optgroup label="vehicle type">
+                                @foreach (VehicleType item in ViewBag.VehicleTypes)
+                                {
+                                    <option value="4.@item.ID" @if (Model.VehicleTypeId == item.ID) { @: selected
+                                                                                            }>
+                                        @item.Name
+                                                                                        </option>
+                                }
+                            </optgroup>
+                        </select>
+
                     </div>
                     <input type="hidden" name="search_param" value="all" id="search_param">
                     <input type="text" class="form-control" name="searchValue" placeholder="Search vehicle..." value="@Model.SearchValue">
@@ -47,6 +55,9 @@
         </div>
     </div>
 </form>
+
+
+
 
 
     <!-- Header-->
@@ -64,31 +75,16 @@
                         <th class="text-right">@Html.ActionLink("Price", "Search", new { sortOrder = Model.GetNextSortOrder("price"), dropDown = Model.DropDown, searchValue = Model.SearchValue })</th>
                     </tr>
                 </thead>
-
-                           @foreach (MATJParking.Web.Models.ParkingPlace place in Model.SearchResult)
-            {
+                <!-- Write out resuts -->
                 <tbody>
-                    <tr>
-                        <td>@place.ID</td>
-                        @if (place.Occupied)
-                        {
-                            <td><a href="~/Vehicle/CarDetails/@place.VehicleRegNumber">@place.VehicleRegNumber</a> </td>
-                            <td>@place.Vehicle.VehicleType.Name</td>
-                            <td class="text-right">@Math.Round(place.Vehicle.ParkingTime, 2)</td>
-                            <td class="text-right">@place.Vehicle.Price SEK</td>
-                        }
-                        else
-                        {
-                            <td>- empty - </td>
-                            <td>@place.VehicleType.Name</td>
-                            <td class="text-right">-</td>
-                            <td class="text-right">-</td>
-                        }
-                        
-                    </tr>
-
+                        <tr ng-repeat="place in data">
+                            <td>{{place.id}}</td>
+                            <td><a href="~/Vehicle/CarDetails/{{place.VehicleRegNumber}}">{{place.VehicleRegNumber}}</a> </td>
+                            <td>{{place.Vehicle.VehicleType.Name}}</td>
+                            <td class="text-right">{{place.Vehicle.ParkingTime}}</td>
+                            <td class="text-right">{{place.Vehicle.Price}} SEK</td>
+                        </tr>
                 </tbody>
-                }
             </table>
         </div>
 
