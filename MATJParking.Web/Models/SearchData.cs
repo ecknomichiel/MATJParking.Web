@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using MATJParking.Web.Repositories;
+using Newtonsoft.Json;
 
 namespace MATJParking.Web.Models
 {
@@ -74,6 +75,13 @@ namespace MATJParking.Web.Models
                 return result;
             }
         }
+        public string JSONData 
+        {
+            get
+            {
+                return JsonConvert.SerializeObject(SearchResult, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+            }
+        }
         public char MenuOption
         {
             get
@@ -88,7 +96,7 @@ namespace MATJParking.Web.Models
         public SearchData()
         {
             DropDown = "1"; //Default: all parked vehicles
-            SearchValue = "";
+            SearchValue = " ";
             SortOrder = "place_asc";
             SearchResult = new ParkingPlace[0]; 
         }

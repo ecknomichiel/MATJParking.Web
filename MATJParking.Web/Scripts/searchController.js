@@ -25,22 +25,23 @@
             $scope.searchValue = searchValue;
             $scope.vehicleTypeId = vehicleTypeId;
             $scope.data = parkingPlaces;
+            $scope.$apply;
 
         };
 
         $scope.getData = getData;
 
         //initialise default values
-        $scope.data = [];
+       /* $scope.data = [];
         $scope.dropDown = "1";
         $scope.searchValue = "";
         $scope.errorMessage = "";
         $scope.sortOrder = "place_asc";
-        $scope.vehicleTypeId = 0;
+        $scope.vehicleTypeId = 0;*/
     }
 
 
     //Get our module. It is defined in a different file
-    var module = angular.module("matjModule");
-    modul.controller("searchController", ["$scope", "$http", searchController])
-});
+    var module = angular.module("garage");
+    module.controller("searchController", ["$scope", "$http", searchController])
+}());

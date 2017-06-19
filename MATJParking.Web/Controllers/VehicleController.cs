@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using MATJParking.Web.Models;
 using MATJParking.Web.Repositories;
 using MATJParking.Web.ModelBinder;
+using Newtonsoft.Json;
 
 
 namespace MATJParking.Web.Controllers
@@ -125,7 +126,7 @@ namespace MATJParking.Web.Controllers
             return View(Garage.Instance.GetOverview());
         }
 
-        public IEnumerable<ParkingPlace> _Search(SearchData data)
+        public string _Search(SearchData data)
         {
             if (data == null)
             {
@@ -153,14 +154,15 @@ namespace MATJParking.Web.Controllers
                     break;
             }
             data.Sort();
-            return data.SearchResult;
+            return data.JSONData;
         }
 
         public ActionResult Search(SearchData data)
         {
             ViewBag.VehicleTypes = Garage.Instance.GetVehicleTypes();
 
-            data.SearchResult = _Search(data);
+            _Search(data);//Fills and sorts data
+
             return View(data);
         }
     }

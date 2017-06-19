@@ -6,10 +6,8 @@
 }
 
 <h2>Search</h2>
-<form ng-app="matjModule" ng-controller="searchController" ng-init="setSearchData(@Model.DropDown, @Model.SearchValue, @Model.VehicleTypeId, @JsonConvert.SerializeObject(Model.SearchResult, new JsonSerializerSettings
-                                                                                                                                        {
-                                                                                                                                            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                                                                                                                                        }))">
+<div ng-controller="searchController" ng-init="setSearchData(@Model.DropDown, '@Model.SearchValue', @Model.VehicleTypeId,  @Model.JSONData)">
+<form >
     <p class="lead"></p>
     <div class="container">
         <div class="row">
@@ -19,28 +17,28 @@
 
                         <select class="form-control " id="dropDown" name="dropDown">
                             <option value="1" @if (Model.DropDown == "1") { @: selected
-                                                                            } )>
+                                                                                                                } )>
                                 Parked Vehicles
                             </option>
                             <option value="2" @if (Model.DropDown == "2") { @: selected
-                                                                            }>
+                                                                                                                }>
                                 Price greater than
                             </option>
                             <option value="3" @if (Model.DropDown == "3") { @: selected
-                                                                            }>
+                                                                                                                }>
                                 Registration number
                             </option>
                             <option value="5" @if (Model.DropDown == "5") { @: selected
-                                                                                                                    }>
+                                                                                                                                                        }>
                                 All parking places
                             </option>
                             <optgroup label="vehicle type">
                                 @foreach (VehicleType item in ViewBag.VehicleTypes)
                                 {
                                     <option value="4.@item.ID" @if (Model.VehicleTypeId == item.ID) { @: selected
-                                                                                            }>
+                                                                                                                                        }>
                                         @item.Name
-                                                                                        </option>
+                                    </option>
                                 }
                             </optgroup>
                         </select>
@@ -49,7 +47,7 @@
                     <input type="hidden" name="search_param" value="all" id="search_param">
                     <input type="text" class="form-control" name="searchValue" placeholder="Search vehicle..." value="@Model.SearchValue">
                     <span class="input-group-btn">
-                        <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search "> </span></button>
+                        <button class="btn btn-default" type="button" ng-click="getData()"><span class="glyphicon glyphicon-search "> </span></button>
                     </span>
                 </div>
             </div>
@@ -58,15 +56,17 @@
             @Model.SearchPath
         </div>
     </div>
+  
 </form>
 
 
 
 
 
+
     <!-- Header-->
-    
-        <div class="container">
+
+          <div class="container">
             <br />
        
             <table class="table table-striped">
@@ -79,10 +79,12 @@
                         <th class="text-right">@Html.ActionLink("Price", "Search", new { sortOrder = Model.GetNextSortOrder("price"), dropDown = Model.DropDown, searchValue = Model.SearchValue })</th>
                     </tr>
                 </thead>
-                <!-- Write out resuts -->
+
                 <tbody>
+                    <tr><td>{{data.count}}</td></tr>
                         <tr ng-repeat="place in data">
-                            <td>{{place.id}}</td>
+
+                           <td>{{place.ID}}</td>
                             <td><a href="~/Vehicle/CarDetails/{{place.VehicleRegNumber}}">{{place.VehicleRegNumber}}</a> </td>
                             <td>{{place.Vehicle.VehicleType.Name}}</td>
                             <td class="text-right">{{place.Vehicle.ParkingTime}}</td>
@@ -94,5 +96,6 @@
 
 
 
-
+    {{data}}
+    </div>
 
