@@ -125,14 +125,13 @@ namespace MATJParking.Web.Controllers
             return View(Garage.Instance.GetOverview());
         }
 
-        public ActionResult Search(SearchData data)
+        public IEnumerable<ParkingPlace> _Search(SearchData data)
         {
-            ViewBag.VehicleTypes = Garage.Instance.GetVehicleTypes();
             if (data == null)
             {
                 data = new SearchData();
             }
-           
+
             switch (data.MenuOption)
             {
                 case '1':
@@ -143,7 +142,7 @@ namespace MATJParking.Web.Controllers
                     double.TryParse(data.SearchValue, out sv);
                     data.SearchResult = Garage.Instance.SearchAllParkedVehiclesOnPrice(sv, true);
                     break;
-                case '3':                    
+                case '3':
                     data.SearchResult = Garage.Instance.SearchByRegNum(data.SearchValue);
                     break;
                 case '4':
@@ -154,6 +153,14 @@ namespace MATJParking.Web.Controllers
                     break;
             }
             data.Sort();
+            return data.SearchResult;
+        }
+
+        public ActionResult Search(SearchData data)
+        {
+            ViewBag.VehicleTypes = Garage.Instance.GetVehicleTypes();
+
+            data.SearchResult = _Search(data);
             return View(data);
         }
     }
