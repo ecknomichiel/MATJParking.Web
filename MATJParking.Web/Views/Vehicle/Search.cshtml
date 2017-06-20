@@ -16,24 +16,16 @@
                     <div class="input-group-btn search-panel">
 
                         <select class="form-control " id="dropDown" name="dropDown" ng-model="dropDown">
-                            <option value="1">
-                                Parked Vehicles
-                            </option>
-                            <option value="2">
-                                Price greater than
-                            </option>
-                            <option value="3">
-                                Registration number
-                            </option>
-                            <option value="5">
-                                All parking places
+                            <option ng-repeat="option in getSelectOptions()"
+                                    value={{option.value}}
+                                    ng-selected="dropDown==option.value"
+                                    >
+                                {{option.name}}
                             </option>
                             <optgroup label="vehicle type">
-                                @foreach (VehicleType item in ViewBag.VehicleTypes)
-                                {
-                                    <option value="4.@item.ID">
-                                        @item.Name
-                                    </option>
+                                <option ng-repeat="vehicleType in vehicleTypes" value="4.{{vehicleType.ID}}" ng-selected="dropDown==4.{{vehicleType.ID}}">
+                                    {{vehicleType.Name}}
+                                </option>
                                 }
                             </optgroup>
                         </select>
@@ -48,17 +40,11 @@
             </div>
         </div>
         <div class="row">
-            @Model.SearchPath
+            {{searchPath}}
         </div>
     </div>
   
 </form>
-
-
-
-
-
-
     <!-- Header-->
 
           <div class="container">
@@ -67,11 +53,11 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>@Html.ActionLink("Place", "Search", new { sortOrder = Model.GetNextSortOrder("place"), dropDown = Model.DropDown, searchValue = Model.SearchValue })</th>
-                        <th>@Html.ActionLink("Registration number", "Search", new { sortOrder = Model.GetNextSortOrder("regnr"), dropDown = Model.DropDown, searchValue = Model.SearchValue })</th>
-                        <th>@Html.ActionLink("Vehicle type", "Search", new { sortOrder = Model.GetNextSortOrder("type"), dropDown = Model.DropDown, searchValue = Model.SearchValue })</th>
-                        <th class="text-right">@Html.ActionLink("Parking time (hour)", "Search", new { sortOrder = Model.GetNextSortOrder("time"), dropDown = Model.DropDown, searchValue = Model.SearchValue })</th>
-                        <th class="text-right">@Html.ActionLink("Price", "Search", new { sortOrder = Model.GetNextSortOrder("price"), dropDown = Model.DropDown, searchValue = Model.SearchValue })</th>
+                        <th><a href="#" ng-click="setSortOrder('place')">Place</a></th>
+                        <th><a href="#" ng-click="setSortOrder('registrationNumber')">Registration numer</a></th>
+                        <th><a href="#" ng-click="setSortOrder('vehicleType')">Vehicle type</a></th>
+                        <th class="text-right"><a href="#" ng-click="setSortOrder('parkingTime')">Parking time</a></th>
+                        <th class="text-right"><a href="#" ng-click="setSortOrder('price')">Price</a></th>
                     </tr>
                 </thead>
 
