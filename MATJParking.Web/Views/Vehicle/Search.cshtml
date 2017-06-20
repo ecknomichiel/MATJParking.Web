@@ -16,24 +16,22 @@
                     <div class="input-group-btn search-panel">
 
                         <select class="form-control " id="dropDown" name="dropDown" ng-model="dropDown">
-                            <option value="1">
+                            <option value="1" ng-selected="dropDown=='1'">
                                 Parked Vehicles
                             </option>
-                            <option value="2">
+                            <option value="2" ng-selected="dropDown=='2'">
                                 Price greater than
                             </option>
-                            <option value="3">
+                            <option value="3" ng-selected="dropDown=='3'">
                                 Registration number
                             </option>
-                            <option value="5">
+                            <option value="5" ng-selected="dropDown=='5'">
                                 All parking places
                             </option>
                             <optgroup label="vehicle type">
-                                @foreach (VehicleType item in ViewBag.VehicleTypes)
-                                {
-                                    <option value="4.@item.ID">
-                                        @item.Name
-                                    </option>
+                                <option ng-repeat="vehicleType in vehicleTypes" value="4.{{vehicleType.ID}}" ng-selected="dropDown==4.{{vehicleType.ID}}">
+                                    {{vehicleType.Name}}
+                                </option>
                                 }
                             </optgroup>
                         </select>
@@ -48,7 +46,7 @@
             </div>
         </div>
         <div class="row">
-            @Model.SearchPath
+            {{searchPath}}
         </div>
     </div>
   
