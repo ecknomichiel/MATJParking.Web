@@ -15,7 +15,7 @@ namespace MATJParking.Web
                         "~/Scripts/jquery.validate*"));
 
             bundles.Add(new ScriptBundle("~/bundles/angular").Include(
-                       "~/Scripts/angular.js", "~/Scripts/myScript.js", "~/Scripts/searchController.js"));
+                       "~/Scripts/angular.js", "~/Scripts/i18n/angular-locale_en-se.js", "~/Scripts/myScript.js", "~/Scripts/searchController.js"));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
