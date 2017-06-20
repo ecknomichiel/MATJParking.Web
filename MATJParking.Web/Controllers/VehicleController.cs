@@ -126,8 +126,16 @@ namespace MATJParking.Web.Controllers
             return View(Garage.Instance.GetOverview());
         }
 
+        public string _getVehicleTypes()
+        {
+            return JsonConvert.SerializeObject(Garage.Instance.GetVehicleTypes());
+        }
+
         public string _Search(SearchData data)
         {
+            string dd = Request.QueryString["DropDown"];
+            
+            
             if (data == null)
             {
                 data = new SearchData();

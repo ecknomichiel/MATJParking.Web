@@ -6,7 +6,7 @@
 }
 
 <h2>Search</h2>
-<div ng-controller="searchController" ng-init="setSearchData(@Model.DropDown, '@Model.SearchValue', @Model.VehicleTypeId,  @Model.JSONData)">
+<div ng-controller="searchController" ng-init="setSearchData(@Model.DropDown, '@Model.SearchValue', @Model.VehicleTypeId,  @Model.JSONData, @JsonConvert.SerializeObject(ViewBag.VehicleTypes))">
 <form >
     <p class="lead"></p>
     <div class="container">
@@ -15,28 +15,23 @@
                 <div class="input-group">
                     <div class="input-group-btn search-panel">
 
-                        <select class="form-control " id="dropDown" name="dropDown">
-                            <option value="1" @if (Model.DropDown == "1") { @: selected
-                                                                                                                } )>
+                        <select class="form-control " id="dropDown" name="dropDown" ng-model="dropDown">
+                            <option value="1">
                                 Parked Vehicles
                             </option>
-                            <option value="2" @if (Model.DropDown == "2") { @: selected
-                                                                                                                }>
+                            <option value="2">
                                 Price greater than
                             </option>
-                            <option value="3" @if (Model.DropDown == "3") { @: selected
-                                                                                                                }>
+                            <option value="3">
                                 Registration number
                             </option>
-                            <option value="5" @if (Model.DropDown == "5") { @: selected
-                                                                                                                                                        }>
+                            <option value="5">
                                 All parking places
                             </option>
                             <optgroup label="vehicle type">
                                 @foreach (VehicleType item in ViewBag.VehicleTypes)
                                 {
-                                    <option value="4.@item.ID" @if (Model.VehicleTypeId == item.ID) { @: selected
-                                                                                                                                        }>
+                                    <option value="4.@item.ID">
                                         @item.Name
                                     </option>
                                 }
@@ -45,7 +40,7 @@
 
                     </div>
                     <input type="hidden" name="search_param" value="all" id="search_param">
-                    <input type="text" class="form-control" name="searchValue" placeholder="Search vehicle..." value="@Model.SearchValue">
+                    <input type="text" class="form-control" name="searchValue" placeholder="Search vehicle..." value="@Model.SearchValue" ng-model="searchValue">
                     <span class="input-group-btn">
                         <button class="btn btn-default" type="button" ng-click="getData()"><span class="glyphicon glyphicon-search "> </span></button>
                     </span>
@@ -81,7 +76,6 @@
                 </thead>
 
                 <tbody>
-                    <tr><td>{{data.count}}</td></tr>
                         <tr ng-repeat="place in data">
 
                            <td>{{place.ID}}</td>
@@ -96,6 +90,5 @@
 
 
 
-    {{data}}
     </div>
 

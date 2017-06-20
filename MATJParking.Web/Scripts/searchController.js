@@ -2,12 +2,12 @@
 
     var searchController = function($scope, $http)
     {
-        var getData = function () {
-            $http.get('/Vehicle/_Search', {
-                dropDown: $scope.dropDown,
-                searchValue: $scope.searchValue,
-                searchOrder: $scope.searchOrder,
-                vehicleTypeId: $scope.vehicleTypeId
+        $scope.getData = function () {
+            $http.post('/Vehicle/_Search', {
+                DropDown: $scope.dropDown,
+                SearchValue: $scope.searchValue,
+                SortOrder: $scope.sortOrder,
+                VehicleTypeId: $scope.vehicleTypeId
             }).then(function (response) {
                 //Success
                 $scope.data = response.data;
@@ -20,24 +20,30 @@
             });
         };
 
-        $scope.setSearchData = function (dropDown, searchValue, vehicleTypeId, parkingPlaces) {
+        $scope.getVehicleTypes = function () {
+            $http.get('/Vehicle/_getVehicleTypes', {}).then(function (response) {
+                $scope.vehicleTypes = response.data;
+            });
+        };
+
+     
+        $scope.setSearchData = function (dropDown, searchValue, vehicleTypeId, parkingPlaces, vehicleTypes) {
             $scope.dropDown = dropDown;
             $scope.searchValue = searchValue;
             $scope.vehicleTypeId = vehicleTypeId;
             $scope.data = parkingPlaces;
-            $scope.$apply;
+            $scope.vehicleTypes = vehicleTypes;
 
         };
 
-        $scope.getData = getData;
 
         //initialise default values
-       /* $scope.data = [];
+        $scope.data = [];
         $scope.dropDown = "1";
         $scope.searchValue = "";
         $scope.errorMessage = "";
         $scope.sortOrder = "place_asc";
-        $scope.vehicleTypeId = 0;*/
+        $scope.vehicleTypeId = 0;
     }
 
 
