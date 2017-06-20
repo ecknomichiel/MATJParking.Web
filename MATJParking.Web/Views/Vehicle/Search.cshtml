@@ -66,7 +66,7 @@
                         <td>{{place.ID}}</td>
                         <td><a href="~/Vehicle/CarDetails/{{place.VehicleRegNumber}}">{{place.VehicleRegNumber}}</a> </td>
                         <td>{{place.Vehicle.VehicleType.Name}}</td>
-                        <td class="text-right">{{place.Vehicle.ParkingTime}}</td>
+                        <td class="text-right">{{place.Vehicle.ParkingTime | number : 2}} </td>
                         <td class="text-right">{{place.Vehicle.Price}} SEK</td>
                     </tr>
                 </tbody>
