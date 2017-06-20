@@ -71,11 +71,63 @@
                 {name: "Registration number", value: "3"},
                 {name: "All parking places", value: "5"}
             ]
-            for (vehicleType in $scope.vehicleTypes) {
-                result.push({ name: vehicleType.Name, value: "4." + vehicleType.ID });
-            };
             return result;
         };
+
+        $scope.setSortOrder = function (fieldName) {
+            if (fieldName == $scope.sortFieldName)
+            {
+                $scope.sortAsc = !$scope.sortAsc;
+            }
+            else
+            {
+                $scope.sortFieldName = fieldName;
+                $scope.sortAsc = true;
+            }
+            var datafunction;
+            switch (fieldName)
+            {
+                case "place": datafunction = function (el) {
+                    return el.ID;
+                }
+                    break;
+                case "registrationNumber": datafunction = function (el) {
+                    return el.VehicleRegNumber;
+                }
+                    break;
+                case "vehicleType": datafunction = function (el) {
+                    return el.Vehicle.VehicleType.Name;
+                }
+                    break;
+                case "parkingTime": datafunction = function (el) {
+                    return el.Vehicle.ParkingTime;
+                }
+                    break;
+                case "price": datafunction = function (el) {
+                    return el.Vehicle.Price;
+                }
+                    break;
+                default: datafunction = function (el) {
+                    return el.ID;
+                }
+                    break;
+            }
+            var compareFunction = function (el1, el2) {
+                var result = 0;
+                if (datafunction(el1) > datafunction(el2))
+                {
+                    result = 1;
+                }
+                else if (datafunction(el1) < datafunction(el2))
+                {
+                    result = -1;
+                }
+                if (!$scope.sortAsc)
+                    result = -result;
+                return result;
+            }
+            $scope.data = $scope.data.sort(compareFunction);
+        }
         
 
 
@@ -84,7 +136,7 @@
         $scope.dropDown = "1";
         $scope.searchValue = "";
         $scope.errorMessage = "";
-        $scope.sortOrder = "place_asc";
+        $scope.setSortOrder("place");
         $scope.vehicleTypeId = 0;
         $scope.searchPath = getSearchPath();
     }
