@@ -126,7 +126,45 @@
                     result = -result;
                 return result;
             }
-            $scope.data = $scope.data.sort(compareFunction);
+           // $scope.data = $scope.data.sort(compareFunction);
+        }
+
+        $scope.getSortPath = function(){
+            switch ($scope.sortFieldName)
+            {
+                case "place": 
+                    return "ID";
+                    break;
+                case "registrationNumber": 
+                    return "VehicleRegNumber";
+                    break;
+                case "vehicleType": 
+                    return "Vehicle.VehicleType.Name";
+                
+                    break;
+                case "parkingTime":
+                    return "Vehicle.ParkingTime";
+                
+                    break;
+                case "price": 
+                    return "Vehicle.Price";
+   
+                    break;
+                default: 
+                    return "ID";
+                    break;
+            }
+        };
+
+        $scope.sortData = function (column) {
+            $scope.reverseSort = ($scope.sortColumn == column) ? !$scope.reverseSort : false;
+            $scope.sortColumn = column;
+        }
+        $scope.getSortClass = function (column) {
+            if ($scope.sortColumn == column) {
+                return $scope.reverseSort ? 'arrow-down' : 'arrow-up'
+            }
+            return '';
         }
         
 

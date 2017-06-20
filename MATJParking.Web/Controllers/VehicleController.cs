@@ -152,7 +152,15 @@ namespace MATJParking.Web.Controllers
                     data.SearchResult = Garage.Instance.SearchAllParkedVehiclesOnPrice(sv, true);
                     break;
                 case '3':
-                    data.SearchResult = Garage.Instance.SearchByRegNum(data.SearchValue);
+                    if (data.SearchValue == null || data.SearchValue == "")
+                    {
+                        data.SearchResult = Garage.Instance.SearchAllParkedVehicles();
+                    }
+                    else
+                    {
+                        data.SearchResult = Garage.Instance.SearchByRegNum(data.SearchValue);
+                    }
+                    
                     break;
                 case '4':
                     data.SearchResult = Garage.Instance.SearchAllParkedVehiclesOnVehicleType(data.VehicleTypeId);

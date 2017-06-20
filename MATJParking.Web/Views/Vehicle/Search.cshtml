@@ -15,7 +15,7 @@
                 <div class="input-group">
                     <div class="input-group-btn search-panel">
 
-                        <select class="form-control " id="dropDown" name="dropDown" ng-model="dropDown">
+                        <select class="form-control " id="dropDown" name="dropDown" ng-model="dropDown" ng-init="dropDown='1'">
                             <option ng-repeat="option in getSelectOptions()"
                                     value={{option.value}}
                                     ng-selected="dropDown==option.value"
@@ -62,14 +62,13 @@
                 </thead>
 
                 <tbody>
-                        <tr ng-repeat="place in data">
-
-                           <td>{{place.ID}}</td>
-                            <td><a href="~/Vehicle/CarDetails/{{place.VehicleRegNumber}}">{{place.VehicleRegNumber}}</a> </td>
-                            <td>{{place.Vehicle.VehicleType.Name}}</td>
-                            <td class="text-right">{{place.Vehicle.ParkingTime}}</td>
-                            <td class="text-right">{{place.Vehicle.Price}} SEK</td>
-                        </tr>
+                    <tr ng-repeat="place in data |orderBy:getSortPath():!sortAsc">
+                        <td>{{place.ID}}</td>
+                        <td><a href="~/Vehicle/CarDetails/{{place.VehicleRegNumber}}">{{place.VehicleRegNumber}}</a> </td>
+                        <td>{{place.Vehicle.VehicleType.Name}}</td>
+                        <td class="text-right">{{place.Vehicle.ParkingTime}}</td>
+                        <td class="text-right">{{place.Vehicle.Price}} SEK</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
