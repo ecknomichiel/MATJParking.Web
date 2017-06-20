@@ -18,8 +18,7 @@
                         <select class="form-control " id="dropDown" name="dropDown" ng-model="dropDown" ng-init="dropDown='1'">
                             <option ng-repeat="option in getSelectOptions()"
                                     value={{option.value}}
-                                    ng-selected="dropDown==option.value"
-                                    >
+                                    ng-selected="dropDown==option.value">
                                 {{option.name}}
                             </option>
                             <optgroup label="vehicle type">
@@ -29,7 +28,6 @@
                                 }
                             </optgroup>
                         </select>
-
                     </div>
                     <input type="hidden" name="search_param" value="all" id="search_param">
                     <input type="text" class="form-control" name="searchValue" placeholder="Search vehicle..." value="@Model.SearchValue" ng-model="searchValue">
@@ -66,7 +64,7 @@
                         <td>{{place.ID}}</td>
                         <td><a href="~/Vehicle/CarDetails/{{place.VehicleRegNumber}}">{{place.VehicleRegNumber}}</a> </td>
                         <td>{{place.Vehicle.VehicleType.Name}}</td>
-                        <td class="text-right">{{place.Vehicle.ParkingTime}}</td>
+                        <td class="text-right">{{place.Vehicle.ParkingTime | number : 2}} </td>
                         <td class="text-right">{{place.Vehicle.Price | currency:'SEK':2}}</td>
                     </tr>
                 </tbody>
