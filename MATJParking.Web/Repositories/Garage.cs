@@ -165,14 +165,14 @@ namespace MATJParking.Web.Repositories
         
     }
     #region Exceptions
-    class EUnknownVehicleType: Exception
+    public class EUnknownVehicleType: Exception
     {
         public EUnknownVehicleType(string vehicleType): base(String.Format("Unknows vehicle type: {0}", vehicleType))
         {
         }
     }
 
-    class ENoPlaceForVehicle: Exception
+    public class ENoPlaceForVehicle: Exception
     {
         public ENoPlaceForVehicle(string vehicleType): 
             base (String.Format("No place available for a {0}", vehicleType.ToString().ToLower()))
@@ -180,7 +180,7 @@ namespace MATJParking.Web.Repositories
         }
     }
 
-    class EVehicleNotFound : Exception
+    public class EVehicleNotFound : Exception
     {
         public EVehicleNotFound(string aRegistrationNumber) :
             base(String.Format("Vehicle with registration number '{0}' not found.", aRegistrationNumber))
@@ -188,7 +188,7 @@ namespace MATJParking.Web.Repositories
         }
     }
 
-    class EVehicleAlreadyCheckedIn : Exception
+    public class EVehicleAlreadyCheckedIn : Exception
     {
         public EVehicleAlreadyCheckedIn(string aRegistrationNumber, string aParkingID) :
             base(String.Format("Vehicle with registration number '{0}' is already checked in at place {1}.", aRegistrationNumber, aParkingID))

@@ -277,6 +277,74 @@ namespace MATJParking.Web.Tests.Controllers
         }
         #endregion
 
+        #region CarDetails
+        [TestMethod]
+        public void CarDetailsGivenNonExistingRegNrReturnsViewBagError()
+        {
+            //ActionResult CarDetails(string registrationNumber, string Id)
+            //Arrange
+            IGarage fakeGarage = Mock.Create<IGarage>();
+            Mock.Arrange(() => fakeGarage.SearchPlaceWhereVehicleIsParked("NONEXIST")).Returns(null as ParkingPlace).MustBeCalled();
+            VehicleController cnt = new VehicleController(fakeGarage);
+            ParkingPlace expectedResult = null;
+            //Act
+            ViewResult viewResult = cnt.CarDetails("NONEXIST", null) as ViewResult;
+            ParkingPlace result = viewResult.Model as ParkingPlace;
+            string actualMessage = viewResult.ViewBag.Message;
+            //Assert
+            Assert.AreEqual(expectedResult, result);
+            Assert.AreEqual("Cannot find car with registrationnumber NONEXIST",actualMessage);
+        }
+
+        [TestMethod]
+        public void CarDetailsGivenExistingRegNrReturnsNoViewBagError()
+        {
+            //ActionResult CarDetails(string registrationNumber, string Id)
+            //Arrange
+            ParkingPlace expectedResult = new ParkingPlace();
+            IGarage fakeGarage = Mock.Create<IGarage>();
+            Mock.Arrange(() => fakeGarage.SearchPlaceWhereVehicleIsParked("EXIST")).Returns(expectedResult).MustBeCalled();
+            VehicleController cnt = new VehicleController(fakeGarage);
+            
+            //Act
+            ViewResult viewResult = cnt.CarDetails("EXIST", null) as ViewResult;
+            ParkingPlace result = viewResult.Model as ParkingPlace;
+            string actualMessage = viewResult.ViewBag.Message;
+            //Assert
+            Assert.AreEqual(expectedResult, result);
+            Assert.AreEqual(null, actualMessage);
+        }
+        #endregion
+
+        #region CheckOutYes
+        [TestMethod]
+        public void CheckOutYesCallsCheckOut()
+        {
+            //Arrange
+            ParkingPlace expectedResult = new ParkingPlace();
+            IGarage fakeGarage = Mock.Create<IGarage>();
+            Mock.Arrange(() => fakeGarage.CheckOut("PARKED")).MustBeCalled();
+            VehicleController cnt = new VehicleController(fakeGarage);
+            //Act
+            ViewResult viewResult = cnt.CheckOutYes("PARKED") as ViewResult;
+            //Assert
+            Assert.AreEqual(1, Mock.GetTimesCalled(() => fakeGarage.CheckOut("PARKED")));
+        }
+
+        [TestMethod]
+        public void CheckOutYesGivenEVehicleNotFoundReturnsViewbagMessage()
+        {
+            //Arrange
+            ParkingPlace expectedResult = new ParkingPlace();
+            IGarage fakeGarage = Mock.Create<IGarage>();
+            Mock.Arrange(() => fakeGarage.CheckOut("NOTPARKED")).Throws(new EVehicleNotFound("NOTPARKED")).MustBeCalled();
+            VehicleController cnt = new VehicleController(fakeGarage);
+            //Act
+            ViewResult viewResult = cnt.CheckOutYes("NOTPARKED") as ViewResult;
+            //Assert
+            Assert.AreEqual("Vehicle with registration number 'NOTPARKED' not found.", viewResult.ViewBag.Message);
+        }
+        #endregion
 
     }
 }
