@@ -149,9 +149,6 @@ namespace MATJParking.Web.Controllers
 
         public string _Search(SearchData data)
         {
-        //    string dd = Request.QueryString["DropDown"];
-            
-            
             if (data == null)
             {
                 data = new SearchData();
