@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MATJParking.Web;
+using MATJParking.Web.Repositories;
 using MATJParking.Web.Controllers;
 using MATJParking.Web.Models;
+using Telerik.JustMock;
 
 namespace MATJParking.Web.Tests.Controllers
 {
@@ -17,7 +18,8 @@ namespace MATJParking.Web.Tests.Controllers
         public void Index()
         {
             // Arrange
-            VehicleController controller = new VehicleController();
+            IGarage fakeGarage = Mock.Create<IGarage>();
+            VehicleController controller = new VehicleController(fakeGarage);
 
             // Act
             ViewResult result = controller.Index() as ViewResult;
@@ -30,11 +32,17 @@ namespace MATJParking.Web.Tests.Controllers
         public void SearchGivenDropdown1ReturnsAllParkedVehicles()
         {
             //Arrange
-            VehicleController cnt = new VehicleController();
+            IGarage fakeGarage = Mock.Create<IGarage>();
+            Mock.Arrange(() => fakeGarage.SearchAllParkedVehicles()).Returns(new ParkingPlace[] { new ParkingPlace(){ID="Test", Vehicle = new Vehicle(), VehicleType = new VehicleType()}}).MustBeCalled();
+            VehicleController cnt = new VehicleController(fakeGarage);
             SearchData data = new SearchData() { DropDown = "1" };
+            int expectedResult = 1;
             //Act
+            ViewResult result = cnt.Search(data) as ViewResult;
+            int actualResult = (result.Model as SearchData).SearchResult.Count();
             //Assert
-            ActionResult result = cnt.Search(data);
+            Assert.IsNotNull(result);
+            Assert.AreEqual(expectedResult, actualResult);     
         }
     }
 }

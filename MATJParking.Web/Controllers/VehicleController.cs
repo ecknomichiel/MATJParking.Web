@@ -15,6 +15,11 @@ namespace MATJParking.Web.Controllers
     public class VehicleController : Controller
     {
         private IGarage garage;
+        public VehicleController()
+        {
+            garage = Garage.Instance;
+        }
+
         public VehicleController(IGarage garage = null) 
         {
             if (garage == null)
@@ -144,7 +149,7 @@ namespace MATJParking.Web.Controllers
 
         public string _Search(SearchData data)
         {
-            string dd = Request.QueryString["DropDown"];
+        //    string dd = Request.QueryString["DropDown"];
             
             
             if (data == null)

@@ -48,7 +48,7 @@ namespace MATJParking.Web.Models
 
 
 
-        internal void AssignUpdateabeData(Owner source)
+        public void AssignUpdateabeData(Owner source)
         {
             if (source != null)
             {
@@ -56,6 +56,15 @@ namespace MATJParking.Web.Models
                 LastName = source.LastName;
                 PersonNumber = source.PersonNumber;
             }
+        }
+
+        public Owner()
+        {
+            Id = 0;
+            FirstName = "";
+            LastName = "";
+            PersonNumber = "";
+            Vehicles = null;
         }
     }
 }
