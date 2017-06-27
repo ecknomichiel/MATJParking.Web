@@ -240,5 +240,43 @@ namespace MATJParking.Web.Tests.Controllers
         }
         #endregion
 
+        #region _getVehicleTypes
+        [TestMethod]
+        public void _getVehicleTypesReturnsAllVehicleTypes()
+        {
+            //Arrange
+            IGarage fakeGarage = Mock.Create<IGarage>();
+            Mock.Arrange(() => fakeGarage.GetVehicleTypes()).Returns(new VehicleType[] { new VehicleType() { ID = 1, Name = "Viking färja", PricingFactor = 1000 } }).MustBeCalled();
+            VehicleController cnt = new VehicleController(fakeGarage);
+            int expectedResult = 1;
+            //Act
+            string jsonResult = cnt._getVehicleTypes();
+            IEnumerable<VehicleType> result = JsonConvert.DeserializeObject<IEnumerable<VehicleType>>(jsonResult);
+            //Assert
+            Assert.AreEqual(expectedResult, result.Count());
+            Assert.AreEqual("Viking färja", result.First().Name);
+        }
+        #endregion
+
+        #region Overview
+        public void OverviewReturnsOverviewLines()
+        {
+            // ActionResult Overview()
+            //Arrange
+            IGarage fakeGarage = Mock.Create<IGarage>();
+            Mock.Arrange(() => fakeGarage.GetOverview()).Returns(new OverviewLine[] { new OverviewLine() { VehicleType = new VehicleType(){ID = 1, Name = "Viking färja", PricingFactor = 1000 }, NumAvailablePlaces = 130 }}).MustBeCalled();
+            VehicleController cnt = new VehicleController(fakeGarage);
+            int expectedResult = 1;
+            //Act
+            ViewResult viewResult = cnt.Overview() as ViewResult;
+            IEnumerable<OverviewLine> result = viewResult.Model as IEnumerable<OverviewLine>;
+            //Assert
+            Assert.AreEqual(expectedResult, result.Count());
+            Assert.AreEqual("Viking färja", result.First().VehicleType.Name);
+            Assert.AreEqual(130, result.First().NumAvailablePlaces);
+        }
+        #endregion
+
+
     }
 }
