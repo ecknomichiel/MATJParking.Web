@@ -14,13 +14,24 @@ namespace MATJParking.Web.Controllers
 {
     public class VehicleController : Controller
     {
-        public VehicleController() {}
+        private IGarage garage;
+        public VehicleController(IGarage garage = null) 
+        {
+            if (garage == null)
+            {
+                this.garage = Garage.Instance;
+            }
+            else
+            {
+                this.garage = garage;
+            }
+        }
     
         // GET: Vehicle
         public ActionResult Index(string id="")
         {
             ViewBag.Message = id;
-            return View(Garage.Instance.GetVehicleTypes());
+            return View(garage.GetVehicleTypes());
         }
         [HttpPost]
         public ActionResult CheckIn([ModelBinder(typeof(CheckinDataModelBinder))] CheckInData checkInData)
@@ -30,15 +41,15 @@ namespace MATJParking.Web.Controllers
             {
                 case CheckInState.Initial:
                     {//First time the Checkin is called: search for the car and show any details we might have
-                        checkInData.Vehicle.Assign(Garage.Instance.SearchVehicle(checkInData.RegistrationNumber));
+                        checkInData.Vehicle.Assign(garage.SearchVehicle(checkInData.RegistrationNumber));
                         checkInData.State = CheckInState.SearchDone;
-                        ParkingPlace pl = Garage.Instance.SearchPlaceWhereVehicleIsParked(checkInData.RegistrationNumber);
+                        ParkingPlace pl = garage.SearchPlaceWhereVehicleIsParked(checkInData.RegistrationNumber);
                         if (pl != null)
                         {
                             checkInData.Place = pl;
                             checkInData.State = CheckInState.AlreadyParked;
                         }
-                        checkInData.VehicleTypes = Garage.Instance.GetVehicleTypes();
+                        checkInData.VehicleTypes = garage.GetVehicleTypes();
                         return View(checkInData);
                     }
                 case CheckInState.SearchDone:
@@ -46,7 +57,7 @@ namespace MATJParking.Web.Controllers
                         //Check if data is ready for checkin
                         try
                         {
-                            checkInData.Place = Garage.Instance.CheckIn(checkInData);
+                            checkInData.Place = garage.CheckIn(checkInData);
                             checkInData.State = CheckInState.Parked;
                         }
                         catch (Exception e)
@@ -56,13 +67,13 @@ namespace MATJParking.Web.Controllers
                             {
                                 checkInData.State = CheckInState.NoPlaceForVehicle;
                                 //Load miniml data for displying error page: Vehicle type
-                                checkInData.Vehicle.VehicleType = Garage.Instance.GetVehicleType(checkInData.VehicleTypeId);
+                                checkInData.Vehicle.VehicleType = garage.GetVehicleType(checkInData.VehicleTypeId);
                             }
                             if (e.GetType() == typeof(EVehicleAlreadyCheckedIn))
                             {
                                 checkInData.State = CheckInState.AlreadyParked;
                                 //Load data for displying error page: Parking place
-                                checkInData.Place = Garage.Instance.SearchPlaceWhereVehicleIsParked(checkInData.Vehicle.RegNumber);
+                                checkInData.Place = garage.SearchPlaceWhereVehicleIsParked(checkInData.Vehicle.RegNumber);
                             }
                         }
                         return View(checkInData);
@@ -78,7 +89,7 @@ namespace MATJParking.Web.Controllers
         {
             if (RegistrationNumber == null)
                 return RedirectToAction("Index");
-            ParkingPlace pl = Garage.Instance.SearchPlaceWhereVehicleIsParked(RegistrationNumber);
+            ParkingPlace pl = garage.SearchPlaceWhereVehicleIsParked(RegistrationNumber);
             if (pl == null)
             {
                 string msg = "Cannot find car with registrationnumber " + RegistrationNumber;
@@ -92,7 +103,7 @@ namespace MATJParking.Web.Controllers
         {
             try
             {
-                Garage.Instance.CheckOut(VehicleRegNumber);
+                garage.CheckOut(VehicleRegNumber);
             }
             catch (Exception e)
             {
@@ -111,7 +122,7 @@ namespace MATJParking.Web.Controllers
             }
             if (registrationNumber != null)
             {
-                pl = Garage.Instance.SearchPlaceWhereVehicleIsParked(registrationNumber);
+                pl = garage.SearchPlaceWhereVehicleIsParked(registrationNumber);
             }
 
             if (pl == null)
@@ -123,12 +134,12 @@ namespace MATJParking.Web.Controllers
 
         public ActionResult Overview()
         {
-            return View(Garage.Instance.GetOverview());
+            return View(garage.GetOverview());
         }
 
         public string _getVehicleTypes()
         {
-            return JsonConvert.SerializeObject(Garage.Instance.GetVehicleTypes());
+            return JsonConvert.SerializeObject(garage.GetVehicleTypes());
         }
 
         public string _Search(SearchData data)
@@ -144,29 +155,29 @@ namespace MATJParking.Web.Controllers
             switch (data.MenuOption)
             {
                 case '1':
-                    data.SearchResult = Garage.Instance.SearchAllParkedVehicles();
+                    data.SearchResult = garage.SearchAllParkedVehicles();
                     break;
                 case '2':
                     double sv;
                     double.TryParse(data.SearchValue, out sv);
-                    data.SearchResult = Garage.Instance.SearchAllParkedVehiclesOnPrice(sv, true);
+                    data.SearchResult = garage.SearchAllParkedVehiclesOnPrice(sv, true);
                     break;
                 case '3':
                     if (data.SearchValue == null || data.SearchValue == "")
                     {
-                        data.SearchResult = Garage.Instance.SearchAllParkedVehicles();
+                        data.SearchResult = garage.SearchAllParkedVehicles();
                     }
                     else
                     {
-                        data.SearchResult = Garage.Instance.SearchByRegNum(data.SearchValue);
+                        data.SearchResult = garage.SearchByRegNum(data.SearchValue);
                     }
                     
                     break;
                 case '4':
-                    data.SearchResult = Garage.Instance.SearchAllParkedVehiclesOnVehicleType(data.VehicleTypeId);
+                    data.SearchResult = garage.SearchAllParkedVehiclesOnVehicleType(data.VehicleTypeId);
                     break;
                 case '5':
-                    data.SearchResult = Garage.Instance.SearchAllParkingPlaces();
+                    data.SearchResult = garage.SearchAllParkingPlaces();
                     break;
             }
             data.Sort();
@@ -175,7 +186,7 @@ namespace MATJParking.Web.Controllers
 
         public ActionResult Search(SearchData data)
         {
-            ViewBag.VehicleTypes = Garage.Instance.GetVehicleTypes();
+            ViewBag.VehicleTypes = garage.GetVehicleTypes();
 
             _Search(data);//Fills and sorts data
 

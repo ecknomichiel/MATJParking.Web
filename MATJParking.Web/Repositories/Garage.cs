@@ -8,7 +8,7 @@ using MATJParking.Web.DataAccess;
 
 namespace MATJParking.Web.Repositories
 {
-    class Garage
+    class Garage: IGarage
     {
         private GarageContext context = new GarageContext();
 

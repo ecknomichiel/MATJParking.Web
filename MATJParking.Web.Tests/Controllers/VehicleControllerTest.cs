@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MATJParking.Web;
 using MATJParking.Web.Controllers;
+using MATJParking.Web.Models;
 
 namespace MATJParking.Web.Tests.Controllers
 {
@@ -23,6 +24,17 @@ namespace MATJParking.Web.Tests.Controllers
 
             // Assert
             Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void SearchGivenDropdown1ReturnsAllParkedVehicles()
+        {
+            //Arrange
+            VehicleController cnt = new VehicleController();
+            SearchData data = new SearchData() { DropDown = "1" };
+            //Act
+            //Assert
+            ActionResult result = cnt.Search(data);
         }
     }
 }
