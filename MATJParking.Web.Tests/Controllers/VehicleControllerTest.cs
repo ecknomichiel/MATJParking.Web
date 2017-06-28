@@ -344,6 +344,21 @@ namespace MATJParking.Web.Tests.Controllers
             //Assert
             Assert.AreEqual("Vehicle with registration number 'NOTPARKED' not found.", viewResult.ViewBag.Message);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(Exception))]
+        public void CheckOutYesGivenOtherExceptionThrowsException()
+        {
+            //Arrange
+            ParkingPlace expectedResult = new ParkingPlace();
+            IGarage fakeGarage = Mock.Create<IGarage>();
+            Mock.Arrange(() => fakeGarage.CheckOut("NOTPARKED")).Throws(new Exception("NOTPARKED")).MustBeCalled();
+            VehicleController cnt = new VehicleController(fakeGarage);
+            //Act
+            ActionResult viewResult = cnt.CheckOutYes("NOTPARKED");
+            //Assert
+            Assert.IsNotInstanceOfType(viewResult, typeof(ViewResult));
+        }
         #endregion
 
     }

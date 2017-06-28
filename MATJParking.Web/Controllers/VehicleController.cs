@@ -110,7 +110,7 @@ namespace MATJParking.Web.Controllers
             {
                 garage.CheckOut(VehicleRegNumber);
             }
-            catch (Exception e)
+            catch (EVehicleNotFound e)
             {
                 ViewBag.Message = e.Message;
                 return View();
