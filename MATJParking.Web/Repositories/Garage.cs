@@ -155,7 +155,7 @@ namespace MATJParking.Web.Repositories
         #region Constructor
         private Garage()
         {
-            context = new GarageContext();
+            context = GarageContextFactory.Instance.GetGarageContext();
         }
         #endregion
 

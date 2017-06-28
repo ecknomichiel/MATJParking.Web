@@ -10,6 +10,6 @@ namespace MATJParking.Web.DataAccess
         VehicleType GetVehicleTypeByID(int vehicleTypeId);
         IEnumerable<ParkingPlace> GetAllParkingPlaces();
         IEnumerable<VehicleType> GetVehicleTypes();
-        void SaveChanges();
+        int SaveChanges();
     }
 }

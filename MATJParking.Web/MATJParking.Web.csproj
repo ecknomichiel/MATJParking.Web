@@ -120,6 +120,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\VehicleController.cs" />
     <Compile Include="DataAccess\GarageContext.cs" />
+    <Compile Include="DataAccess\GarageContextFactory.cs" />
     <Compile Include="DataAccess\IGarageContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
