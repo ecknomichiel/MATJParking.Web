@@ -10,7 +10,7 @@ namespace MATJParking.Web.Repositories
 {
     class Garage: IGarage
     {
-        private GarageContext context = new GarageContext();
+        private IGarageContext context;
 
         private static Garage instance;
 

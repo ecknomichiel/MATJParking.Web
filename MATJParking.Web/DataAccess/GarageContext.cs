@@ -7,13 +7,18 @@ using MATJParking.Web.Models;
 
 namespace MATJParking.Web.DataAccess
 {
-    public class GarageContext: DbContext
+    public class GarageContext: DbContext, IGarageContext
     {
         private List<VehicleType> vehicleTypes = new List<VehicleType>();
         public DbSet<VehicleType> VehicleTypes { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<ParkingPlace> ParkingPlaces { get; set; }
         public DbSet<Owner> Owners { get; set; }
+
+        public void SaveChanges()
+        {
+            base.SaveChanges();
+        }
 
         public Vehicle GetVehicleByID(string RegNumber)
         {
