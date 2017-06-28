@@ -46,6 +46,18 @@ namespace MATJParking.Web.Models
             }
         }
 
+        public bool Equals(object obj)
+        {
+            if (obj == null || obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+            Owner other = obj as Owner;
+            return this.Id == other.Id
+                && this.FirstName == other.FirstName
+                && this.PersonNumber == other.PersonNumber;
+        }
+
 
 
         public void AssignUpdateabeData(Owner source)

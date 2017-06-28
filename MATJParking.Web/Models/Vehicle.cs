@@ -48,10 +48,24 @@ namespace MATJParking.Web.Models
         {
             if (source != null)
             {
+                RegNumber = source.RegNumber;
                 CheckInTime = source.CheckInTime;
                 VehicleType.Assign(source.VehicleType);
                 Owner.Assign(source.Owner);
             }
+        }
+
+        public bool Equals(object obj)
+        {
+            if (obj == null || obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+            Vehicle other = obj as Vehicle;
+            return this.RegNumber == other.RegNumber
+                && this.CheckInTime == other.CheckInTime
+                && this.VehicleType.Equals(other.VehicleType)
+                && this.Owner.Equals(other.Owner);
         }
         
         public Vehicle()

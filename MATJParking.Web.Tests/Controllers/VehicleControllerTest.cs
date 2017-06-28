@@ -318,7 +318,7 @@ namespace MATJParking.Web.Tests.Controllers
 
         #region CheckOutYes
         [TestMethod]
-        public void CheckOutYesCallsCheckOut()
+        public void CheckOutYesCallsCheckOutReturnsIndex()
         {
             //Arrange
             ParkingPlace expectedResult = new ParkingPlace();
@@ -329,6 +329,7 @@ namespace MATJParking.Web.Tests.Controllers
             ViewResult viewResult = cnt.CheckOutYes("PARKED") as ViewResult;
             //Assert
             Assert.AreEqual(1, Mock.GetTimesCalled(() => fakeGarage.CheckOut("PARKED")));
+            Assert.AreEqual("Index", viewResult.ViewName);
         }
 
         [TestMethod]
@@ -361,5 +362,65 @@ namespace MATJParking.Web.Tests.Controllers
         }
         #endregion
 
+        #region  CheckOut
+        [TestMethod]
+        public void CheckOutGivenParkedRegNrReturnsModelParkingPlace()
+        {
+            //Arrange
+            ParkingPlace expectedResult = new ParkingPlace();
+            IGarage fakeGarage = Mock.Create<IGarage>();
+            Mock.Arrange(() => fakeGarage.SearchPlaceWhereVehicleIsParked("PARKED")).Returns(expectedResult).MustBeCalled();
+            VehicleController cnt = new VehicleController(fakeGarage);
+            //Act
+            ViewResult viewResult = cnt.CheckOut("PARKED") as ViewResult;
+            //Assert
+            Assert.AreEqual(1, Mock.GetTimesCalled(() => fakeGarage.SearchPlaceWhereVehicleIsParked("PARKED")));
+            Assert.AreEqual(expectedResult, viewResult.Model as ParkingPlace);
+            Assert.AreEqual("", viewResult.ViewName); //Empty ViewName means default view for the action => CheckOut
+        }
+
+        [TestMethod]
+        public void CheckOutGivenNonParkedRegNrReturnsErrorMessage()
+        {
+            //Arrange
+            ParkingPlace expectedResult = null;
+            IGarage fakeGarage = Mock.Create<IGarage>();
+            Mock.Arrange(() => fakeGarage.SearchPlaceWhereVehicleIsParked("NONPARKED")).Returns(expectedResult).MustBeCalled();
+            VehicleController cnt = new VehicleController(fakeGarage);
+            //Act
+            ViewResult viewResult = cnt.CheckOut("NONPARKED") as ViewResult;
+            //Assert
+            Assert.AreEqual(1, Mock.GetTimesCalled(() => fakeGarage.SearchPlaceWhereVehicleIsParked("NONPARKED")));
+            Assert.AreEqual(expectedResult, viewResult.Model);
+            Assert.AreEqual("Cannot find car with registrationnumber NONPARKED", viewResult.ViewBag.Message);
+            Assert.AreEqual("Index", viewResult.ViewName);
+        }
+        #endregion
+
+        #region CheckIn
+        //ActionResult CheckIn([ModelBinder(typeof(CheckinDataModelBinder))] CheckInData checkInData)
+
+        [TestMethod]
+        public void InitialCheckInGivenExistingRegNrReturnsCheckInViewSearchDone()
+        {
+            //Arrange
+            Vehicle expectedResult = new Vehicle() { RegNumber = "NONPARKED", VehicleType = new VehicleType() { ID = 13, Name = "Testvehicle", PricingFactor = -1 } };
+            IGarage fakeGarage = Mock.Create<IGarage>();
+            Mock.Arrange(() => fakeGarage.SearchPlaceWhereVehicleIsParked("NONPARKED")).Returns(null as ParkingPlace).MustBeCalled();
+            Mock.Arrange(() => fakeGarage.SearchVehicle("NONPARKED")).Returns(expectedResult).MustBeCalled();
+            VehicleController cnt = new VehicleController(fakeGarage);
+            CheckInData data = new CheckInData();
+            data.RegistrationNumber = "NONPARKED";
+            //Act
+            ViewResult viewResult = cnt.CheckIn(data) as ViewResult;
+            CheckInData actualResult = (viewResult.Model as CheckInData);
+            //Assert
+            Assert.AreEqual(1, Mock.GetTimesCalled(() => fakeGarage.SearchPlaceWhereVehicleIsParked("NONPARKED")));
+            Assert.AreEqual(1, Mock.GetTimesCalled(() => fakeGarage.SearchVehicle("NONPARKED")));
+            Assert.IsTrue(expectedResult.Equals(actualResult.Vehicle));
+            Assert.AreEqual(CheckInState.SearchDone, actualResult.State);
+            Assert.AreEqual("", viewResult.ViewName);
+        }
+        #endregion
     }
 }

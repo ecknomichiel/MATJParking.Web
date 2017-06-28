@@ -97,8 +97,8 @@ namespace MATJParking.Web.Controllers
             ParkingPlace pl = garage.SearchPlaceWhereVehicleIsParked(RegistrationNumber);
             if (pl == null)
             {
-                string msg = "Cannot find car with registrationnumber " + RegistrationNumber;
-                return RedirectToAction("Index", new {id = msg});
+                ViewBag.Message = "Cannot find car with registrationnumber " + RegistrationNumber;
+                return View("Index");
             }
             return View(pl);
         }
@@ -116,7 +116,7 @@ namespace MATJParking.Web.Controllers
                 return View();
             }
             //If everything went OK, go back to the index page
-            return RedirectToAction("Index");
+            return View("Index");
         }			
         public ActionResult CarDetails(string registrationNumber, string Id)
         {

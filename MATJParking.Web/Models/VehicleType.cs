@@ -16,5 +16,17 @@ namespace MATJParking.Web.Models
             Name = source.Name;
             PricingFactor = source.PricingFactor;
         }
+
+        public bool Equals(object obj)
+        {
+            if (obj == null || obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+            VehicleType other = obj as VehicleType;
+            return this.ID == other.ID
+                && this.Name == other.Name
+                && this.PricingFactor == other.PricingFactor;
+        }
     }
 }
