@@ -36,11 +36,14 @@ namespace MATJParking.Web.DataAccess
                     continue;
                 }
 
-                IGarageContextCreator creatorObject =
-                    System.Activator.CreateInstance(type) as IGarageContextCreator;
-                if (creatorObject != null)
+                if (typeof(IGarageContextCreator).IsAssignableFrom(type))
                 {
-                    contexts.Add(creatorObject.FactoryKey, creatorObject);
+                    IGarageContextCreator creatorObject =
+                                        System.Activator.CreateInstance(type) as IGarageContextCreator;
+                    if (creatorObject != null)
+                    {
+                        contexts.Add(creatorObject.FactoryKey, creatorObject);
+                    }
                 }
             }
         }
