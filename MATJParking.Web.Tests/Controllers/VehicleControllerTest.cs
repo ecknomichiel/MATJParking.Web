@@ -516,6 +516,27 @@ namespace MATJParking.Web.Tests.Controllers
             Assert.AreEqual(CheckInState.NoPlaceForVehicle, actualResult.State);
             Assert.AreEqual("", viewResult.ViewName);
         }
+
+        //Exception
+        [TestMethod]
+        [ExpectedException(typeof(Exception))]
+        public void CheckInDoesNotHandleException()
+        {
+            //Arrange
+            Vehicle parkedCar = new Vehicle() { RegNumber = "PARKED", VehicleType = new VehicleType() { ID = 13, Name = "Testvehicle", PricingFactor = -1 } };
+            CheckInData data = new CheckInData() { State = CheckInState.SearchDone, Vehicle = parkedCar };
+            data.RegistrationNumber = "PARKED";
+            ParkingPlace expectedResult = new ParkingPlace() { ID = "TEST001", Vehicle = parkedCar, VehicleType = parkedCar.VehicleType };
+            IGarage fakeGarage = Mock.Create<IGarage>();
+            Mock.Arrange(() => fakeGarage.CheckIn(data)).Throws(new Exception()).MustBeCalled();
+
+            VehicleController cnt = new VehicleController(fakeGarage);
+
+            //Act
+            ActionResult viewResult = cnt.CheckIn(data);
+            
+
+        }
         #endregion
     }
 }

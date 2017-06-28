@@ -74,11 +74,15 @@ namespace MATJParking.Web.Controllers
                                 //Load miniml data for displying error page: Vehicle type
                                 checkInData.Vehicle.VehicleType = garage.GetVehicleType(checkInData.VehicleTypeId);
                             }
-                            if (e.GetType() == typeof(EVehicleAlreadyCheckedIn))
+                            else if (e.GetType() == typeof(EVehicleAlreadyCheckedIn))
                             {
                                 checkInData.State = CheckInState.AlreadyParked;
                                 //Load data for displying error page: Parking place
                                 checkInData.Place = garage.SearchPlaceWhereVehicleIsParked(checkInData.Vehicle.RegNumber);
+                            }
+                            else
+                            {
+                                throw e;
                             }
                         }
                         return View(checkInData);
