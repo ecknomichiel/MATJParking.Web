@@ -400,6 +400,7 @@ namespace MATJParking.Web.Tests.Controllers
         #region CheckIn
         //ActionResult CheckIn([ModelBinder(typeof(CheckinDataModelBinder))] CheckInData checkInData)
 
+        //Happy path
         [TestMethod]
         public void InitialCheckInGivenExistingRegNrReturnsCheckInViewSearchDone()
         {
@@ -419,6 +420,56 @@ namespace MATJParking.Web.Tests.Controllers
             Assert.AreEqual(1, Mock.GetTimesCalled(() => fakeGarage.SearchVehicle("NONPARKED")));
             Assert.IsTrue(expectedResult.Equals(actualResult.Vehicle));
             Assert.AreEqual(CheckInState.SearchDone, actualResult.State);
+            Assert.AreEqual("", viewResult.ViewName);
+        }
+
+        //Happy path
+        [TestMethod]
+        public void SearchDoneCheckInGivenExistingUnparkedVehicleReturnsCheckInParked()
+        {
+            //Arrange
+            Vehicle parkedCar = new Vehicle() { RegNumber = "NONPARKED", VehicleType = new VehicleType() { ID = 13, Name = "Testvehicle", PricingFactor = -1 } };
+            CheckInData data = new CheckInData() { State = CheckInState.SearchDone, Vehicle = parkedCar};
+            data.RegistrationNumber = "NONPARKED";
+            ParkingPlace expectedResult = new ParkingPlace() {ID = "TEST001", Vehicle = parkedCar, VehicleType = parkedCar.VehicleType };
+            IGarage fakeGarage = Mock.Create<IGarage>();
+            Mock.Arrange(() => fakeGarage.CheckIn(data)).Returns(expectedResult).MustBeCalled();
+            
+
+            VehicleController cnt = new VehicleController(fakeGarage);
+            
+            //Act
+            ViewResult viewResult = cnt.CheckIn(data) as ViewResult;
+            CheckInData actualResult = (viewResult.Model as CheckInData);
+            //Assert
+            Assert.AreEqual(0, Mock.GetTimesCalled(() => fakeGarage.SearchPlaceWhereVehicleIsParked("NONPARKED")));
+            Assert.AreEqual(0, Mock.GetTimesCalled(() => fakeGarage.SearchVehicle("NONPARKED")));
+            Assert.IsTrue(expectedResult.Equals(actualResult.Place));
+            Assert.AreEqual(CheckInState.Parked, actualResult.State);
+            Assert.AreEqual("", viewResult.ViewName);
+        }
+
+        //Unhappy path
+        [TestMethod]
+        public void InitialCheckInGivenParkedVehicleReturnsAlreadyParked()
+        {
+            //Arrange
+            Vehicle parkedCar = new Vehicle() { RegNumber = "PARKED", VehicleType = new VehicleType() { ID = 13, Name = "Testvehicle", PricingFactor = -1 } };
+            CheckInData data = new CheckInData() { State = CheckInState.Initial, Vehicle = parkedCar };
+            data.RegistrationNumber = "PARKED";
+            ParkingPlace expectedResult = new ParkingPlace() { ID = "TEST001", Vehicle = parkedCar, VehicleType = parkedCar.VehicleType };
+            IGarage fakeGarage = Mock.Create<IGarage>();
+            Mock.Arrange(() => fakeGarage.SearchPlaceWhereVehicleIsParked("PARKED")).Returns(expectedResult as ParkingPlace).MustBeCalled();
+            Mock.Arrange(() => fakeGarage.SearchVehicle("PARKED")).Returns(parkedCar).MustBeCalled();
+
+            VehicleController cnt = new VehicleController(fakeGarage);
+
+            //Act
+            ViewResult viewResult = cnt.CheckIn(data) as ViewResult;
+            CheckInData actualResult = (viewResult.Model as CheckInData);
+            //Assert
+            Assert.IsTrue(expectedResult.Equals(actualResult.Place));
+            Assert.AreEqual(CheckInState.AlreadyParked, actualResult.State);
             Assert.AreEqual("", viewResult.ViewName);
         }
         #endregion
