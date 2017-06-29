@@ -42,10 +42,15 @@ namespace MATJParking.Web.DataAccess
                                         System.Activator.CreateInstance(type) as IGarageContextCreator;
                     if (creatorObject != null)
                     {
-                        contexts.Add(creatorObject.FactoryKey, creatorObject);
+                        Register(creatorObject.FactoryKey, creatorObject);
                     }
                 }
             }
+        }
+
+        public void Register(string Key, IGarageContextCreator creator)
+        {
+            contexts[Key] = creator;
         }
 
         public IGarageContext GetGarageContext()

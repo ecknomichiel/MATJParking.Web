@@ -25,7 +25,7 @@ namespace MATJParking.Web.Tests
 
             List<Vehicle> vehicles = new List<Vehicle>(){
                 new Vehicle(){RegNumber = "UNPARKED", VehicleType = vehicleTypes[0], Owner = new Owner(){Id = 1, FirstName = "Test", LastName = "Person", PersonNumber = "00000000-0000"}},
-                new Vehicle(){RegNumber = "PARKED", VehicleType = vehicleTypes[1], Owner = new Owner(){Id = 2, FirstName = "Andra", LastName = "Person", PersonNumber = "00000000-0001"}},
+                new Vehicle(){RegNumber = "PARKED", VehicleType = vehicleTypes[1], CheckInTime = DateTime.Now.AddHours(-1), Owner = new Owner(){Id = 2, FirstName = "Andra", LastName = "Person", PersonNumber = "00000000-0001"}},
             };
 
             List<ParkingPlace> parkingPlaces = new List<ParkingPlace>()
